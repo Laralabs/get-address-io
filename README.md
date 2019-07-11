@@ -1,7 +1,4 @@
 <p align="center">
-    <img src="http://assets.laralabs.uk/images/logos/laralabs_logo_big.png" height="267px" width="182px" />
-</p>
-<p align="center">
 <a href="https://packagist.org/packages/laralabs/get-address-io"><img src="https://poser.pugx.org/laralabs/get-address-io/version" alt="Stable Build" /></a>
 <a href="https://travis-ci.org/Laralabs/get-address-io"><img src="https://travis-ci.org/Laralabs/get-address-io.svg?branch=master" alt="Build Status"></a>
 <a href="https://styleci.io/repos/195806527"><img src="https://styleci.io/repos/195806527/shield?branch=master" alt="StyleCI"></a>
