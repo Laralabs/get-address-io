@@ -5,14 +5,14 @@ namespace Laralabs\GetAddress\Responses;
 class ExpandedAddress
 {
     /**
-     * Address string
+     * Address string.
      *
      * @var array
      */
     protected $address = [];
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param string $address
      *
@@ -24,7 +24,7 @@ class ExpandedAddress
     }
 
     /**
-     * Get Thoroughfare
+     * Get Thoroughfare.
      *
      * @return string
      */
@@ -34,7 +34,7 @@ class ExpandedAddress
     }
 
     /**
-     * Get Building Name
+     * Get Building Name.
      *
      * @return string
      */
@@ -44,7 +44,7 @@ class ExpandedAddress
     }
 
     /**
-     * Get Sub Building Name
+     * Get Sub Building Name.
      *
      * @return string
      */
@@ -54,7 +54,7 @@ class ExpandedAddress
     }
 
     /**
-     * Get Building Number
+     * Get Building Number.
      *
      * @return string
      */
@@ -64,7 +64,7 @@ class ExpandedAddress
     }
 
     /**
-     * Get Sub Building Number
+     * Get Sub Building Number.
      *
      * @return string
      */
@@ -74,7 +74,7 @@ class ExpandedAddress
     }
 
     /**
-     * Get Line 1
+     * Get Line 1.
      *
      * @return string
      */
@@ -84,7 +84,7 @@ class ExpandedAddress
     }
 
     /**
-     * Get Line 2
+     * Get Line 2.
      *
      * @return string
      */
@@ -94,7 +94,7 @@ class ExpandedAddress
     }
 
     /**
-     * Get Line 3
+     * Get Line 3.
      *
      * @return string
      */
@@ -104,7 +104,7 @@ class ExpandedAddress
     }
 
     /**
-     * Get Line 4
+     * Get Line 4.
      *
      * @return string
      */
@@ -114,9 +114,9 @@ class ExpandedAddress
     }
 
     /**
-     * Get Line
+     * Get Line.
      *
-     * @param integer $line
+     * @param int $line
      *
      * @return string
      */
@@ -126,7 +126,7 @@ class ExpandedAddress
     }
 
     /**
-     * Get Locality
+     * Get Locality.
      *
      * @return string
      */
@@ -136,7 +136,7 @@ class ExpandedAddress
     }
 
     /**
-     * Get Town
+     * Get Town.
      *
      * @return string
      */
@@ -146,9 +146,10 @@ class ExpandedAddress
     }
 
     /**
-     * Get City
+     * Get City.
      *
      * @return string
+     *
      * @see ExpandedAddress:getTown()
      */
     public function getCity(): string
@@ -157,7 +158,7 @@ class ExpandedAddress
     }
 
     /**
-     * Get County
+     * Get County.
      *
      * @return string
      */
@@ -167,7 +168,7 @@ class ExpandedAddress
     }
 
     /**
-     * Get District
+     * Get District.
      *
      * @return string
      */
@@ -177,7 +178,7 @@ class ExpandedAddress
     }
 
     /**
-     * Get Country
+     * Get Country.
      *
      * @return string
      */
@@ -187,7 +188,7 @@ class ExpandedAddress
     }
 
     /**
-     * Return a formatted array for the address
+     * Return a formatted array for the address.
      *
      * @param array $keys Override default key names
      *
@@ -196,14 +197,14 @@ class ExpandedAddress
     public function toArray(array $keys = []): array
     {
         return array_merge([
-            'formatted_string' => $this->toString(true)
+            'formatted_string' => $this->toString(true),
         ], $this->address);
     }
 
     /**
-     * Returns a string based on the address
+     * Returns a string based on the address.
      *
-     * @param boolean $removeEmptyElements Prevents strings having conjoining commas
+     * @param bool $removeEmptyElements Prevents strings having conjoining commas
      *
      * @return string
      */
@@ -217,11 +218,11 @@ class ExpandedAddress
     }
 
     /**
-     * Compare two addresses to see if they are equal
+     * Compare two addresses to see if they are equal.
      *
      * @param \Laralabs\GetAddress\Responses\Address $address Address to compare
      *
-     * @return boolean
+     * @return bool
      */
     public function sameAs(Address $address): bool
     {
@@ -229,7 +230,7 @@ class ExpandedAddress
     }
 
     /**
-     * Convert the address to a comma separated string
+     * Convert the address to a comma separated string.
      *
      * @return string
      */

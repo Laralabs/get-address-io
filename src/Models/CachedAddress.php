@@ -32,7 +32,7 @@ class CachedAddress extends Model
         'country',
         'latitude',
         'longitude',
-        'expanded_result'
+        'expanded_result',
     ];
 
     /**
@@ -77,9 +77,9 @@ class CachedAddress extends Model
     }
 
     /**
-     * Returns a string based on the address
+     * Returns a string based on the address.
      *
-     * @param boolean $removeEmptyElements Prevents strings having conjoining commas
+     * @param bool $removeEmptyElements Prevents strings having conjoining commas
      *
      * @return string
      */

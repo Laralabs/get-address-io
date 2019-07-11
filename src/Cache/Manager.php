@@ -20,7 +20,6 @@ class Manager
      */
     protected $expand;
 
-
     public function __construct()
     {
         $this->expiry = config('getaddress.cache_expiry');
@@ -30,12 +29,13 @@ class Manager
     /**
      * @param $postcode
      * @param $property
+     *
      * @return array|null
      */
     public function checkCache($postcode, $property): ?array
     {
         $params = ['postcode' => $postcode, 'property' => $property];
-        
+
         $results = CachedAddress::where(function ($query) use ($params) {
             $params['property'] !== null ? $query->where('postcode', '=', $params['postcode'])->where('line_1', 'LIKE', '%'.$params['property'].'%')
                 : $query->where('postcode', '=', $params['postcode']);
@@ -52,6 +52,7 @@ class Manager
      * Store response in cache.
      *
      * @param AddressCollectionResponse $response
+     *
      * @return AddressCollectionResponse
      */
     public function responseToCache(AddressCollectionResponse $response): AddressCollectionResponse
@@ -59,19 +60,19 @@ class Manager
         foreach ($response->getAddresses() as $address) {
             if ($address instanceof ExpandedAddress) {
                 CachedAddress::create(array_merge($address->toArray(), [
-                    'longitude' => $response->getLongitude(),
-                    'latitude' => $response->getLatitude(),
-                    'postcode' => $response->getPostcode(),
-                    'expanded_result' => true
+                    'longitude'       => $response->getLongitude(),
+                    'latitude'        => $response->getLatitude(),
+                    'postcode'        => $response->getPostcode(),
+                    'expanded_result' => true,
                 ]));
             }
 
             if ($address instanceof Address) {
                 CachedAddress::create(array_merge($address->toArray(), [
-                    'longitude' => $response->getLongitude(),
-                    'latitude' => $response->getLatitude(),
-                    'postcode' => $response->getPostcode(),
-                    'expanded_result' => false
+                    'longitude'       => $response->getLongitude(),
+                    'latitude'        => $response->getLatitude(),
+                    'postcode'        => $response->getPostcode(),
+                    'expanded_result' => false,
                 ]));
             }
         }
@@ -81,6 +82,7 @@ class Manager
 
     /**
      * @param Collection $results
+     *
      * @return array|null
      */
     protected function checkExpiry(Collection $results): ?array
@@ -98,23 +100,24 @@ class Manager
 
     /**
      * @param Collection $results
+     *
      * @return array
      */
     protected function formatCachedAddresses(Collection $results): array
     {
         return [
             'longitude' => (float) $results->first()->longitude,
-            'latitude' => (float) $results->first()->latitude,
+            'latitude'  => (float) $results->first()->latitude,
             'addresses' => $results->map(function ($address) {
                 if ($this->expand) {
                     return array_merge([
-                        'formatted_string' => $address->formatted_string,
+                        'formatted_string'  => $address->formatted_string,
                         'formatted_address' => array_values($address->only(CachedAddress::$fields)),
                     ], $address->only(CachedAddress::$expandedFields));
                 }
 
                 return $address->formatted_address;
-            })->toArray()
+            })->toArray(),
         ];
     }
 }

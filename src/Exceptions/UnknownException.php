@@ -5,7 +5,7 @@ namespace Laralabs\GetAddress\Exceptions;
 class UnknownException extends \Exception
 {
     /**
-     * Message
+     * Message.
      *
      * @var string
      */

@@ -5,25 +5,25 @@ namespace Laralabs\GetAddress\Responses;
 class Usage
 {
     /**
-     * Number of requests made within the time period
+     * Number of requests made within the time period.
      *
-     * @var integer
+     * @var int
      */
     protected $count = 0;
 
     /**
-     * Limits imposed on your account of number of lookups allowed
+     * Limits imposed on your account of number of lookups allowed.
      *
      * @var array
      */
     protected $limits = [0, 0];
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param integer $count
-     * @param integer $limit1
-     * @param integer $limit2
+     * @param int $count
+     * @param int $limit1
+     * @param int $limit2
      *
      * @return void
      */
@@ -37,9 +37,9 @@ class Usage
     }
 
     /**
-     * Get Count
+     * Get Count.
      *
-     * @return integer
+     * @return int
      */
     public function getCount(): int
     {
@@ -47,9 +47,9 @@ class Usage
     }
 
     /**
-     * Get Limit 1
+     * Get Limit 1.
      *
-     * @return integer
+     * @return int
      */
     public function getLimit1(): int
     {
@@ -57,9 +57,9 @@ class Usage
     }
 
     /**
-     * Get Limit 2
+     * Get Limit 2.
      *
-     * @return integer
+     * @return int
      */
     public function getLimit2(): int
     {
@@ -67,19 +67,19 @@ class Usage
     }
 
     /**
-     * Get Limit
+     * Get Limit.
      *
-     * @param integer $limitNumber
+     * @param int $limitNumber
      *
-     * @return integer
+     * @return int
      */
     public function getLimit($limitNumber): int
     {
-        return $this->limits[$limitNumber-1];
+        return $this->limits[$limitNumber - 1];
     }
 
     /**
-     * Get Limits
+     * Get Limits.
      *
      * @return array
      */
@@ -89,11 +89,11 @@ class Usage
     }
 
     /**
-     * Requests Remaining
+     * Requests Remaining.
      *
-     * @param boolean $untilSlowed Will return requests remaining until calls are slowed by getAddress
+     * @param bool $untilSlowed Will return requests remaining until calls are slowed by getAddress
      *
-     * @return integer
+     * @return int
      */
     public function requestsRemaining($untilSlowed = false): int
     {
@@ -103,9 +103,9 @@ class Usage
     }
 
     /**
-     * Requests Remaining Until Slowed
+     * Requests Remaining Until Slowed.
      *
-     * @return integer
+     * @return int
      */
     public function requestsRemainingUntilSlowed(): int
     {
@@ -113,9 +113,9 @@ class Usage
     }
 
     /**
-     * Has Exceeded Limit
+     * Has Exceeded Limit.
      *
-     * @return boolean
+     * @return bool
      */
     public function hasExceededLimit(): bool
     {
@@ -124,9 +124,9 @@ class Usage
 
     /**
      * Returns whether the initial limit has been reached and whether subsequent
-     * requests have been slowed down by getAddress
+     * requests have been slowed down by getAddress.
      *
-     * @return boolean
+     * @return bool
      */
     public function isRestricted(): bool
     {

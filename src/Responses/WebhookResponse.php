@@ -5,24 +5,24 @@ namespace Laralabs\GetAddress\Responses;
 class WebhookResponse
 {
     /**
-     * Message
+     * Message.
      *
      * @var string
      */
     protected $message;
 
     /**
-     * Hooks
+     * Hooks.
      *
      * @var array
      */
     protected $hooks = [];
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param string $message
-     * @param array $hooks
+     * @param array  $hooks
      */
     public function __construct($message, array $hooks = [])
     {
@@ -31,7 +31,7 @@ class WebhookResponse
     }
 
     /**
-     * Get Message
+     * Get Message.
      *
      * @return string
      */
@@ -41,7 +41,7 @@ class WebhookResponse
     }
 
     /**
-     * Get Hooks
+     * Get Hooks.
      *
      * @return array
      */

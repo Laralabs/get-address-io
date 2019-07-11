@@ -5,28 +5,28 @@ namespace Laralabs\GetAddress\Responses;
 class Address
 {
     /**
-     * Sort returned addresses numerically
+     * Sort returned addresses numerically.
      *
-     * @var boolean
+     * @var bool
      */
     const SORT_NUMERICALLY = true;
 
     /**
-     * Dont perform any specific sort on the returned addresses
+     * Dont perform any specific sort on the returned addresses.
      *
-     * @var boolean
+     * @var bool
      */
     const NO_SORT = false;
 
     /**
-     * Address string
+     * Address string.
      *
      * @var array
      */
     protected $address = [];
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param string $address
      *
@@ -38,7 +38,7 @@ class Address
     }
 
     /**
-     * Get Line 1
+     * Get Line 1.
      *
      * @return string
      */
@@ -48,7 +48,7 @@ class Address
     }
 
     /**
-     * Get Line 2
+     * Get Line 2.
      *
      * @return string
      */
@@ -58,7 +58,7 @@ class Address
     }
 
     /**
-     * Get Line 3
+     * Get Line 3.
      *
      * @return string
      */
@@ -68,7 +68,7 @@ class Address
     }
 
     /**
-     * Get Line 4
+     * Get Line 4.
      *
      * @return string
      */
@@ -78,19 +78,19 @@ class Address
     }
 
     /**
-     * Get Line
+     * Get Line.
      *
-     * @param integer $line
+     * @param int $line
      *
      * @return string
      */
     public function getLine($line): string
     {
-        return $this->address[$line-1];
+        return $this->address[$line - 1];
     }
 
     /**
-     * Get Locality
+     * Get Locality.
      *
      * @return string
      */
@@ -100,7 +100,7 @@ class Address
     }
 
     /**
-     * Get Town
+     * Get Town.
      *
      * @return string
      */
@@ -110,9 +110,10 @@ class Address
     }
 
     /**
-     * Get City
+     * Get City.
      *
      * @return string
+     *
      * @see Address:getTown()
      */
     public function getCity(): string
@@ -121,7 +122,7 @@ class Address
     }
 
     /**
-     * County
+     * County.
      *
      * @return string
      */
@@ -131,7 +132,7 @@ class Address
     }
 
     /**
-     * Return a formatted array for the address
+     * Return a formatted array for the address.
      *
      * @param array $keys Override default key names
      *
@@ -148,9 +149,9 @@ class Address
     }
 
     /**
-     * Returns a string based on the address
+     * Returns a string based on the address.
      *
-     * @param boolean $removeEmptyElements Prevents strings having conjoining commas
+     * @param bool $removeEmptyElements Prevents strings having conjoining commas
      *
      * @return string
      */
@@ -166,19 +167,19 @@ class Address
     }
 
     /**
-     * Compare two addresses to see if they are equal
+     * Compare two addresses to see if they are equal.
      *
      * @param \Laralabs\GetAddress\Responses\Address $address Address to compare
      *
-     * @return boolean
+     * @return bool
      */
-    public function sameAs(Address $address): bool
+    public function sameAs(self $address): bool
     {
         return !array_diff($this->address, $address->toArray());
     }
 
     /**
-     * Convert the address to a comma separated string
+     * Convert the address to a comma separated string.
      *
      * @return string
      */

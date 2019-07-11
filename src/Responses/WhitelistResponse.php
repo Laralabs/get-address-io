@@ -5,24 +5,24 @@ namespace Laralabs\GetAddress\Responses;
 class WhitelistResponse
 {
     /**
-     * Message
+     * Message.
      *
      * @var string
      */
     protected $message;
 
     /**
-     * Items
+     * Items.
      *
      * @var array
      */
     protected $items = [];
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param string $message
-     * @param array $items
+     * @param array  $items
      */
     public function __construct($message, array $items = [])
     {
@@ -31,7 +31,7 @@ class WhitelistResponse
     }
 
     /**
-     * Get Message
+     * Get Message.
      *
      * @return string
      */
@@ -41,7 +41,7 @@ class WhitelistResponse
     }
 
     /**
-     * Get Items
+     * Get Items.
      *
      * @return array
      */

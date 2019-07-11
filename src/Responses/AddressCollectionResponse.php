@@ -12,33 +12,33 @@ class AddressCollectionResponse
     protected $postcode;
 
     /**
-     * Latitude
+     * Latitude.
      *
      * @var float
      */
     protected $latitude;
 
     /**
-     * Longitude
+     * Longitude.
      *
      * @var float
      */
     protected $longitude;
 
     /**
-     * Addresses
+     * Addresses.
      *
      * @var array
      */
     protected $addresses = [];
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param string $postcode
-     * @param float $latitude
-     * @param float $longitude
-     * @param array $addresses
+     * @param float  $latitude
+     * @param float  $longitude
+     * @param array  $addresses
      */
     public function __construct($postcode, $latitude, $longitude, array $addresses = [])
     {
@@ -49,7 +49,7 @@ class AddressCollectionResponse
     }
 
     /**
-     * Get Postcode
+     * Get Postcode.
      *
      * @return string
      */
@@ -59,7 +59,7 @@ class AddressCollectionResponse
     }
 
     /**
-     * Get Latitude
+     * Get Latitude.
      *
      * @return float
      */
@@ -69,7 +69,7 @@ class AddressCollectionResponse
     }
 
     /**
-     * Get Longitude
+     * Get Longitude.
      *
      * @return float
      */
@@ -79,7 +79,7 @@ class AddressCollectionResponse
     }
 
     /**
-     * Get Addresses
+     * Get Addresses.
      *
      * @return array
      */
@@ -89,15 +89,15 @@ class AddressCollectionResponse
     }
 
     /**
-     * Return response as array
+     * Return response as array.
      *
      * @return array
      */
     public function toArray(): array
     {
         return [
-            'postcode' => $this->postcode,
-            'latitude' => $this->latitude,
+            'postcode'  => $this->postcode,
+            'latitude'  => $this->latitude,
             'longitude' => $this->longitude,
             'addresses' => array_map(function ($address) {
                 if ($address instanceof Address) {
@@ -108,12 +108,12 @@ class AddressCollectionResponse
                 }
 
                 return $address;
-            }, $this->addresses)
+            }, $this->addresses),
         ];
     }
 
     /**
-     * Return a json response
+     * Return a json response.
      *
      * @return JsonResponse
      */

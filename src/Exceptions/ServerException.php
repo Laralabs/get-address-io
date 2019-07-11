@@ -5,7 +5,7 @@ namespace Laralabs\GetAddress\Exceptions;
 class ServerException extends \Exception
 {
     /**
-     * Exception Message
+     * Exception Message.
      *
      * @var string
      */
