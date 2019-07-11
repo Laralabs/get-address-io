@@ -69,14 +69,14 @@ class GetAddressBase
      * @param $url
      * @param array $parameters
      *
-     * @return array
-     *
      * @throws ForbiddenException
      * @throws InvalidPostcodeException
      * @throws PostcodeNotFoundException
      * @throws ServerException
      * @throws TooManyRequestsException
      * @throws UnknownException
+     *
+     * @return array
      */
     public function call($method, $url, array $parameters = []): array
     {
@@ -84,14 +84,14 @@ class GetAddressBase
 
         $method = strtolower($method);
         $url = sprintf('%s/%s?%s', $this->url, $url, http_build_query($this->queryString));
-        
+
         if ($this->expand) {
             $url .= '&expand=true';
         }
 
         $response = $this->http->{$method}($url, $parameters);
 
-        if (floor($response->getStatusCode()/100) > 2) {
+        if (floor($response->getStatusCode() / 100) > 2) {
             if ($response->getStatusCode() !== 429) {
                 $this->throwException($response->getStatusCode());
             }

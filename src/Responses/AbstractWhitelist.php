@@ -5,21 +5,21 @@ namespace Laralabs\GetAddress\Responses;
 abstract class AbstractWhitelist
 {
     /**
-     * ID of the white listed object
+     * ID of the white listed object.
      *
      * @var string
      */
     protected $id;
 
     /**
-     * Name of the whitelisted object
+     * Name of the whitelisted object.
      *
      * @var string
      */
     protected $name;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param string $id
      * @param string $name
@@ -33,7 +33,7 @@ abstract class AbstractWhitelist
     }
 
     /**
-     * Get Object ID
+     * Get Object ID.
      *
      * @return string
      */

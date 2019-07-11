@@ -10,7 +10,7 @@ use Laralabs\GetAddress\Responses\ExpandedAddress;
 class GetAddress extends GetAddressBase
 {
     /**
-     * @var boolean
+     * @var bool
      */
     protected $cache;
 
@@ -35,19 +35,19 @@ class GetAddress extends GetAddressBase
     /**
      * Find an address or range of addresses by a postcode, and optional number/string.
      *
-     * @param string $postcode Postcode to search for
-     * @param integer|string $propertyNumber Property number or name
-     * @param boolean $sortNumerically Sorts addresses numerically
+     * @param string     $postcode        Postcode to search for
+     * @param int|string $propertyNumber  Property number or name
+     * @param bool       $sortNumerically Sorts addresses numerically
      *
-     * @return \Laralabs\GetAddress\Responses\AddressCollectionResponse
-     *
-     * @return AddressCollectionResponse
      * @throws Exceptions\ForbiddenException
      * @throws Exceptions\InvalidPostcodeException
      * @throws Exceptions\PostcodeNotFoundException
      * @throws Exceptions\ServerException
      * @throws Exceptions\TooManyRequestsException
      * @throws Exceptions\UnknownException
+     *
+     * @return \Laralabs\GetAddress\Responses\AddressCollectionResponse
+     * @return AddressCollectionResponse
      */
     public function find($postcode, $propertyNumber = null, $sortNumerically = true): AddressCollectionResponse
     {
@@ -89,7 +89,7 @@ class GetAddress extends GetAddressBase
 
     /**
      * @param string $postcode
-     * @param array $response
+     * @param array  $response
      *
      * @return AddressCollectionResponse
      */

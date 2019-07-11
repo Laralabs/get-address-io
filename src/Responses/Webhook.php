@@ -5,21 +5,21 @@ namespace Laralabs\GetAddress\Responses;
 class Webhook
 {
     /**
-     * Webhook ID
+     * Webhook ID.
      *
      * @var string
      */
     protected $id;
 
     /**
-     * Webhook URL
+     * Webhook URL.
      *
      * @var string
      */
     protected $url;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param string $id
      * @param string $url
@@ -33,7 +33,7 @@ class Webhook
     }
 
     /**
-     * Get Webhook ID
+     * Get Webhook ID.
      *
      * @return string
      */
@@ -43,7 +43,7 @@ class Webhook
     }
 
     /**
-     * Get Webhook Url
+     * Get Webhook Url.
      *
      * @return string
      */

@@ -5,14 +5,14 @@ namespace Laralabs\GetAddress\Responses;
 class PrivateAddressResponse extends AddressCollectionResponse
 {
     /**
-     * Message when the API has performed a POST or DELETE request
+     * Message when the API has performed a POST or DELETE request.
      *
      * @var string
      */
     protected $message;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param float $latitude
      * @param float $longitude
@@ -26,7 +26,7 @@ class PrivateAddressResponse extends AddressCollectionResponse
     }
 
     /**
-     * Get Message
+     * Get Message.
      *
      * @return string
      */

@@ -5,7 +5,7 @@ namespace Laralabs\GetAddress\Responses;
 class Ip extends AbstractWhitelist
 {
     /**
-     * Get Ip
+     * Get Ip.
      *
      * @return string
      */

@@ -5,7 +5,7 @@ namespace Laralabs\GetAddress\Responses;
 class Domain extends AbstractWhitelist
 {
     /**
-     * Get Domain
+     * Get Domain.
      *
      * @return string
      */

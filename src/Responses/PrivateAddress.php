@@ -5,14 +5,14 @@ namespace Laralabs\GetAddress\Responses;
 class PrivateAddress extends Address
 {
     /**
-     * Private address ID
+     * Private address ID.
      *
      * @var string
      */
     protected $privateAddressId;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param string $addressId
      * @param string $address
@@ -27,7 +27,7 @@ class PrivateAddress extends Address
     }
 
     /**
-     * Create a new private address object ready to submit to the API
+     * Create a new private address object ready to submit to the API.
      *
      * @param string $line1
      * @param string $line2
@@ -54,7 +54,7 @@ class PrivateAddress extends Address
     }
 
     /**
-     * Get Address ID
+     * Get Address ID.
      *
      * @return string
      */
@@ -64,9 +64,9 @@ class PrivateAddress extends Address
     }
 
     /**
-     * Is Saved
+     * Is Saved.
      *
-     * @return boolean
+     * @return bool
      */
     public function isSaved(): bool
     {
