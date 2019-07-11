@@ -5,13 +5,15 @@
 <a href="https://packagist.org/packages/laralabs/get-address-io"><img src="https://poser.pugx.org/laralabs/get-address-io/version" alt="Stable Build" /></a>
 <a href="https://travis-ci.org/Laralabs/get-address-io"><img src="https://travis-ci.org/Laralabs/get-address-io.svg?branch=master" alt="Build Status"></a>
 <a href="https://styleci.io/repos/195806527"><img src="https://styleci.io/repos/195806527/shield?branch=master" alt="StyleCI"></a>
-<a href="https://codeclimate.com/github/Laralabs/get-address-io"><img src="https://codeclimate.com/github/Laralabs/get-address-io/badges/gpa.svg" /></a>
-<a href="https://codeclimate.com/github/Laralabs/get-address-io/test_coverage"><img src="https://api.codeclimate.com/v1/badges/24d1ca24be59a4952716/test_coverage" /></a>
+<a href="https://codeclimate.com/github/Laralabs/get-address-io/maintainability"><img src="https://api.codeclimate.com/v1/badges/744992b1495722bd6839/maintainability" /></a>
+<a href="https://codeclimate.com/github/Laralabs/get-address-io/test_coverage"><img src="https://api.codeclimate.com/v1/badges/744992b1495722bd6839/test_coverage" /></a>
 </p>
 
-## Laravel getAddress.io Package
+# Laravel getAddress.io Package
 
 This package allows you to easily interact with the [getAddress.io](https://getaddress.io/) API and cache full postcode results to reduce quota usage.
+
+## :rocket: Quick Start
 
 ### Installation
 Require the package in the `composer.json` of your project.
@@ -48,15 +50,15 @@ $results = get_address()->expand()->find($postcode, $property);
 
 The `$property` argument is optional, just searching for a postcode will return all results for that postcode and also cache the data if the cache has been enabled.
 
-### Todo
+### :pushpin: Todo
 
 - Admin Features.
 - Unit Tests.
 
-### Support
+### :speech_balloon: Support
 
 Please raise an issue on GitHub if there is a problem.
 
-### License
+### :key: License
 
 This is open-sourced software licensed under the [MIT License](http://opensource.org/licenses/MIT).
