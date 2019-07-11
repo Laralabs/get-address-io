@@ -50,15 +50,15 @@ $results = get_address()->expand()->find($postcode, $property);
 
 The `$property` argument is optional, just searching for a postcode will return all results for that postcode and also cache the data if the cache has been enabled.
 
-### :pushpin: Todo
+## :pushpin: Todo
 
 - Admin Features.
 - Unit Tests.
 
-### :speech_balloon: Support
+## :speech_balloon: Support
 
 Please raise an issue on GitHub if there is a problem.
 
-### :key: License
+## :key: License
 
 This is open-sourced software licensed under the [MIT License](http://opensource.org/licenses/MIT).
