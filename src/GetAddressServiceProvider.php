@@ -14,7 +14,8 @@ class GetAddressServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->mergeConfigFrom(
-            __DIR__.'/../config/getaddress.php', 'getaddress'
+            __DIR__.'/../config/getaddress.php',
+            'getaddress'
         );
 
         $this->app->bind('getaddress', function ($app, $parameters) {
