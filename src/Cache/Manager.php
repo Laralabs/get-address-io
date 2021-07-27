@@ -116,7 +116,7 @@ class Manager
                     ], $address->only(CachedAddress::$expandedFields));
                 }
 
-                return $address->formatted_address;
+                return $address->formatted_string;
             })->toArray(),
         ];
     }
