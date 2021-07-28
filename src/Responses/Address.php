@@ -162,7 +162,7 @@ class Address
         }
 
         return implode(',', array_filter($this->address, function ($value) {
-            return $value !== ' ';
+            return trim($value) !== '';
         }));
     }
 
