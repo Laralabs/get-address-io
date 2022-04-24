@@ -82,7 +82,8 @@ class GetAddress extends GetAddressBase
         return new AutocompleteCollectionResponse(
             $this->call(
                 'POST',
-                sprintf('autocomplete/%s', $term), $parameters
+                sprintf('autocomplete/%s', $term),
+                $parameters
             )['suggestions'] ?? null
         );
     }

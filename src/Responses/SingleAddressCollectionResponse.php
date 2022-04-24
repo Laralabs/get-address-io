@@ -40,7 +40,7 @@ class SingleAddressCollectionResponse extends AddressCollectionResponse
             'postcode'  => $this->postcode,
             'latitude'  => $this->latitude,
             'longitude' => $this->longitude,
-            'address' => $this->address,
+            'address'   => $this->address,
         ];
     }
 }
