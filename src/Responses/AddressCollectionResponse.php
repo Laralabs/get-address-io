@@ -6,41 +6,15 @@ use Illuminate\Http\JsonResponse;
 
 class AddressCollectionResponse
 {
-    /**
-     * @var string
-     */
-    protected $postcode;
+    protected ?string $postcode;
 
-    /**
-     * Latitude.
-     *
-     * @var float
-     */
-    protected $latitude;
+    protected ?float $latitude;
 
-    /**
-     * Longitude.
-     *
-     * @var float
-     */
-    protected $longitude;
+    protected ?float $longitude;
 
-    /**
-     * Addresses.
-     *
-     * @var array
-     */
-    protected $addresses = [];
+    protected array $addresses = [];
 
-    /**
-     * Constructor.
-     *
-     * @param string $postcode
-     * @param float  $latitude
-     * @param float  $longitude
-     * @param array  $addresses
-     */
-    public function __construct($postcode, $latitude, $longitude, array $addresses = [])
+    public function __construct(?string $postcode, ?float $latitude, ?float $longitude, array $addresses = [])
     {
         $this->postcode = $postcode;
         $this->latitude = $latitude;
@@ -48,58 +22,33 @@ class AddressCollectionResponse
         $this->addresses = $addresses;
     }
 
-    /**
-     * Get Postcode.
-     *
-     * @return string
-     */
-    public function getPostcode(): string
+    public function getPostcode(): ?string
     {
         return $this->postcode;
     }
 
-    /**
-     * Get Latitude.
-     *
-     * @return float
-     */
-    public function getLatitude(): float
+    public function getLatitude(): ?float
     {
         return $this->latitude;
     }
 
-    /**
-     * Get Longitude.
-     *
-     * @return float
-     */
-    public function getLongitude(): float
+    public function getLongitude(): ?float
     {
         return $this->longitude;
     }
 
-    /**
-     * Get Addresses.
-     *
-     * @return array
-     */
     public function getAddresses(): array
     {
         return $this->addresses;
     }
 
-    /**
-     * Return response as array.
-     *
-     * @return array
-     */
     public function toArray(): array
     {
         return [
             'postcode'  => $this->postcode,
             'latitude'  => $this->latitude,
             'longitude' => $this->longitude,
-            'addresses' => array_map(function ($address) {
+            'addresses' => array_map(static function ($address) {
                 if ($address instanceof Address) {
                     return $address->toString(true);
                 }
@@ -112,11 +61,6 @@ class AddressCollectionResponse
         ];
     }
 
-    /**
-     * Return a json response.
-     *
-     * @return JsonResponse
-     */
     public function respond(): JsonResponse
     {
         return response()->json($this->toArray());
