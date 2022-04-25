@@ -13,12 +13,12 @@ class AutocompleteCollectionResponse
         $this->suggestions = $suggestions;
     }
 
-    public function all(): array
+    public function all(): ?array
     {
         return $this->getSuggestions();
     }
 
-    public function getSuggestions(): array
+    public function getSuggestions(): ?array
     {
         return $this->suggestions;
     }

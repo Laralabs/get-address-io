@@ -29,11 +29,6 @@ class SingleAddressCollectionResponse extends AddressCollectionResponse
         return $this->address;
     }
 
-    /**
-     * Return response as array.
-     *
-     * @return array
-     */
     public function toArray(): array
     {
         return [
