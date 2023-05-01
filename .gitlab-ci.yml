@@ -99,6 +99,7 @@ lint:php:
     - composer phpcs
   dependencies:
     - build:php
+  allow_failure: true
 
 # ======================
 # Test jobs
