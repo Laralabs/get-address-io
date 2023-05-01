@@ -5,7 +5,9 @@ namespace Laralabs\GetAddress;
 use Laralabs\GetAddress\Cache\Manager;
 use Laralabs\GetAddress\Responses\Address;
 use Laralabs\GetAddress\Responses\AddressCollectionResponse;
+use Laralabs\GetAddress\Responses\AutocompleteCollectionResponse;
 use Laralabs\GetAddress\Responses\ExpandedAddress;
+use Laralabs\GetAddress\Responses\SingleAddressCollectionResponse;
 
 class GetAddress extends GetAddressBase
 {
@@ -73,6 +75,22 @@ class GetAddress extends GetAddressBase
         }
 
         return $response;
+    }
+
+    public function autocomplete(string $term, ?array $parameters = null): AutocompleteCollectionResponse
+    {
+        return new AutocompleteCollectionResponse(
+            $this->call(
+                'POST',
+                sprintf('autocomplete/%s', $term),
+                $parameters
+            )['suggestions'] ?? null
+        );
+    }
+
+    public function get(string $id): SingleAddressCollectionResponse
+    {
+        return new SingleAddressCollectionResponse($this->call('GET', sprintf('get/%s', $id)));
     }
 
     /**
