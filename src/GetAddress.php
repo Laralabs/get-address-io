@@ -11,22 +11,11 @@ use Laralabs\GetAddress\Responses\SingleAddressCollectionResponse;
 
 class GetAddress extends GetAddressBase
 {
-    /**
-     * @var bool
-     */
-    protected $cache;
+    protected bool $cache = false;
 
-    /**
-     * @var \Laralabs\GetAddress\Cache\Manager|null
-     */
-    protected $manager;
+    protected ?Manager $manager;
 
-    /**
-     * GetAddress constructor.
-     *
-     * @param string|null $apiKey
-     */
-    public function __construct($apiKey = null)
+    public function __construct(?string $apiKey = null)
     {
         parent::__construct($apiKey);
 
@@ -38,21 +27,14 @@ class GetAddress extends GetAddressBase
      * Find an address or range of addresses by a postcode, and optional number/string.
      *
      * @param string     $postcode        Postcode to search for
-     * @param int|string $propertyNumber  Property number or name
+     * @param null|int|string $propertyNumber  Property number or name
      * @param bool       $sortNumerically Sorts addresses numerically
-     *
-     * @throws Exceptions\ForbiddenException
-     * @throws Exceptions\InvalidPostcodeException
-     * @throws Exceptions\PostcodeNotFoundException
-     * @throws Exceptions\ServerException
-     * @throws Exceptions\TooManyRequestsException
-     * @throws Exceptions\UnknownException
-     *
-     * @return \Laralabs\GetAddress\Responses\AddressCollectionResponse
-     * @return AddressCollectionResponse
      */
-    public function find($postcode, $propertyNumber = null, $sortNumerically = true): AddressCollectionResponse
-    {
+    public function find(
+        string $postcode,
+        null|int|string $propertyNumber = null,
+        bool $sortNumerically = true
+    ): AddressCollectionResponse {
         if ($this->cache) {
             $cached = $this->manager->checkCache($postcode, $propertyNumber);
 
@@ -93,11 +75,7 @@ class GetAddress extends GetAddressBase
         return new SingleAddressCollectionResponse($this->call('GET', sprintf('get/%s', $id)));
     }
 
-    /**
-     * Override expanded results.
-     *
-     * @return self
-     */
+    /** Override expanded results. */
     public function expand(): self
     {
         $this->expand = true;
@@ -105,12 +83,6 @@ class GetAddress extends GetAddressBase
         return $this;
     }
 
-    /**
-     * @param string $postcode
-     * @param array  $response
-     *
-     * @return AddressCollectionResponse
-     */
     protected function createAddressCollectionResponse(string $postcode, array $response): AddressCollectionResponse
     {
         return new AddressCollectionResponse(

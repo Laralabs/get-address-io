@@ -3,55 +3,25 @@
 namespace Laralabs\GetAddress;
 
 use GuzzleHttp\Client;
-use Laralabs\GetAddress\Exceptions\ForbiddenException;
 use Laralabs\GetAddress\Exceptions\Handler;
-use Laralabs\GetAddress\Exceptions\InvalidPostcodeException;
-use Laralabs\GetAddress\Exceptions\PostcodeNotFoundException;
-use Laralabs\GetAddress\Exceptions\ServerException;
-use Laralabs\GetAddress\Exceptions\TooManyRequestsException;
-use Laralabs\GetAddress\Exceptions\UnknownException;
 
 class GetAddressBase
 {
-    /**
-     * @var string
-     */
-    protected $apiKey;
+    protected string $apiKey;
 
-    /**
-     * @var string
-     */
-    protected $adminKey;
+    protected ?string $adminKey = null;
 
-    /**
-     * @var bool
-     */
-    protected $requiresAdminKey = false;
+    protected bool $requiresAdminKey = false;
 
-    /**
-     * @var int
-     */
-    protected $delay;
+    protected int $delay = 0;
 
-    /**
-     * @var string
-     */
-    protected $url;
+    protected string $url;
 
-    /**
-     * @var bool
-     */
-    protected $expand;
+    protected bool $expand = false;
 
-    /**
-     * @var array
-     */
-    protected $queryString = [];
+    protected array $queryString = [];
 
-    /**
-     * @var \GuzzleHttp\Client
-     */
-    protected $http;
+    protected Client $http;
 
     public function __construct($apiKey = null, $adminKey = null)
     {
@@ -63,23 +33,7 @@ class GetAddressBase
         $this->http = new Client();
     }
 
-    /**
-     * Call an external resource.
-     *
-     * @param $method
-     * @param $url
-     * @param array $parameters
-     *
-     * @throws ForbiddenException
-     * @throws InvalidPostcodeException
-     * @throws PostcodeNotFoundException
-     * @throws ServerException
-     * @throws TooManyRequestsException
-     * @throws UnknownException
-     *
-     * @return array
-     */
-    public function call($method, $url, array $parameters = []): array
+    public function call(string $method, string $url, array $parameters = []): array
     {
         $this->queryString['api-key'] = $this->requiresAdminKey ? $this->adminKey : $this->apiKey;
 
