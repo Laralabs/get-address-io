@@ -10,13 +10,16 @@
     ],
     "minimum-stability": "dev",
     "require": {
-      "php": "^7.3|^8.0",
-      "illuminate/support": "^5.5|^6.0|^7.0|^8.0|^9.0|^10.0"
+      "php": "^8.1",
+      "laravel/framework": "^10.0"
     },
     "require-dev": {
+      "roave/security-advisories": "dev-latest",
       "mockery/mockery": "^1.0",
-      "orchestra/testbench": "^3.4|^4.0|^5.0|^6.0|^7.0",
-      "phpunit/phpunit": ">6.0"
+      "orchestra/testbench": "^8.0",
+      "phpunit/phpunit": "^9.5",
+      "squizlabs/php_codesniffer": "^3.7",
+      "clntdev/coding-standards": "^1.0"
     },
     "autoload": {
       "psr-4": {
@@ -27,6 +30,15 @@
         "src/Helpers/functions.php"
       ]
     },
+  "scripts": {
+    "test": "./vendor/bin/phpunit",
+    "test:coverage": [
+      "@putenv XDEBUG_MODE=coverage",
+      "vendor/bin/phpunit --log-junit=coverage/phpunit.junit.xml --coverage-cobertura=coverage/cobertura.xml --coverage-text"
+    ],
+    "phpcs": "vendor/bin/phpcs ./src ./tests --runtime-set ignore_warnings_on_exit true --standard=./vendor/clntdev/coding-standards/phpcs.xml",
+    "cbf": "vendor/bin/phpcbf ./src --standard=./vendor/clntdev/coding-standards/phpcs.xml"
+  },
     "extra": {
       "laravel": {
         "providers": [
@@ -36,5 +48,10 @@
           "GetAddress": "Laralabs\\GetAddress\\Facades\\GetAddress"
         }
       }
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
     }
-  }
+}
