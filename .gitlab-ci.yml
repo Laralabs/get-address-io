@@ -6,7 +6,7 @@ stages:
 
 # ========= Anchors (Partials) =========
 .php_base: &php_base
-  image: $CI_REGISTRY_IMAGE/php:8.0
+  image: $CI_REGISTRY_IMAGE/php:8.1
   tags:
     - docker
 
