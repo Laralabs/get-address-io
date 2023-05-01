@@ -4,6 +4,7 @@ namespace Laralabs\GetAddress;
 
 use GuzzleHttp\Client;
 use Laralabs\GetAddress\Exceptions\ForbiddenException;
+use Laralabs\GetAddress\Exceptions\Handler;
 use Laralabs\GetAddress\Exceptions\InvalidPostcodeException;
 use Laralabs\GetAddress\Exceptions\PostcodeNotFoundException;
 use Laralabs\GetAddress\Exceptions\ServerException;
@@ -93,7 +94,7 @@ class GetAddressBase
 
         if (floor($response->getStatusCode() / 100) > 2) {
             if ($response->getStatusCode() !== 429) {
-                $this->throwException($response->getStatusCode());
+                Handler::throwException($response->getStatusCode());
             }
 
             sleep($this->delay + .25);
@@ -101,40 +102,10 @@ class GetAddressBase
             $response = $this->http->{$method}($url, $parameters);
 
             if ($response->getStatusCode() !== 200) {
-                $this->throwException($response->getStatusCode());
+                Handler::throwException($response->getStatusCode());
             }
         }
 
         return json_decode($response->getBody(), true);
-    }
-
-    /**
-     * Throw exception.
-     *
-     * @param $statusCode
-     *
-     * @throws ForbiddenException
-     * @throws InvalidPostcodeException
-     * @throws PostcodeNotFoundException
-     * @throws ServerException
-     * @throws TooManyRequestsException
-     * @throws UnknownException
-     */
-    protected function throwException($statusCode): void
-    {
-        switch ($statusCode) {
-            case 400:
-                throw new InvalidPostcodeException();
-            case 401:
-                throw new ForbiddenException();
-            case 404:
-                throw new PostcodeNotFoundException();
-            case 429:
-                throw new TooManyRequestsException();
-            case 500:
-                throw new ServerException();
-            default:
-                throw new UnknownException($statusCode);
-        }
     }
 }
