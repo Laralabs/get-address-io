@@ -6,11 +6,6 @@ use Illuminate\Support\ServiceProvider;
 
 class GetAddressServiceProvider extends ServiceProvider
 {
-    /**
-     * Register the service provider.
-     *
-     * @return void
-     */
     public function register(): void
     {
         $this->mergeConfigFrom(
@@ -27,11 +22,6 @@ class GetAddressServiceProvider extends ServiceProvider
         });
     }
 
-    /**
-     * Bootstrap the application events.
-     *
-     * @return void
-     */
     public function boot(): void
     {
         $this->publishes([

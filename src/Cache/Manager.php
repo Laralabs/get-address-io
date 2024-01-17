@@ -10,15 +10,9 @@ use Laralabs\GetAddress\Responses\ExpandedAddress;
 
 class Manager
 {
-    /**
-     * @var int
-     */
-    protected $expiry;
+    protected int $expiry = 30;
 
-    /**
-     * @var bool
-     */
-    protected $expand;
+    protected bool $expand = false;
 
     public function __construct()
     {
@@ -26,19 +20,17 @@ class Manager
         $this->expand = config('getaddress.expanded_results');
     }
 
-    /**
-     * @param $postcode
-     * @param $property
-     *
-     * @return array|null
-     */
-    public function checkCache($postcode, $property): ?array
+    public function checkCache(string $postcode, string|int $property): ?array
     {
         $params = ['postcode' => $postcode, 'property' => $property];
 
-        $results = CachedAddress::where(function ($query) use ($params) {
-            $params['property'] !== null ? $query->where('postcode', '=', $params['postcode'])->where('line_1', 'LIKE', '%'.$params['property'].'%')
-                : $query->where('postcode', '=', $params['postcode']);
+        $results = CachedAddress::where(static function ($query) use ($params) {
+            $params['property'] !== null ? $query->where('postcode', '=', $params['postcode'])
+                ->where('line_1', 'LIKE', '%'.$params['property'].'%') : $query->where(
+                    'postcode',
+                    '=',
+                    $params['postcode']
+            );
         })->get();
 
         if (count($results) >= 1) {
@@ -48,13 +40,6 @@ class Manager
         return null;
     }
 
-    /**
-     * Store response in cache.
-     *
-     * @param AddressCollectionResponse $response
-     *
-     * @return AddressCollectionResponse
-     */
     public function responseToCache(AddressCollectionResponse $response): AddressCollectionResponse
     {
         foreach ($response->getAddresses() as $address) {
@@ -80,11 +65,6 @@ class Manager
         return $response;
     }
 
-    /**
-     * @param Collection $results
-     *
-     * @return array|null
-     */
     protected function checkExpiry(Collection $results): ?array
     {
         $address = $results->first();
@@ -98,11 +78,6 @@ class Manager
         return $this->formatCachedAddresses($results);
     }
 
-    /**
-     * @param Collection $results
-     *
-     * @return array
-     */
     protected function formatCachedAddresses(Collection $results): array
     {
         return [

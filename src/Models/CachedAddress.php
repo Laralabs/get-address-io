@@ -6,14 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class CachedAddress extends Model
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $table = 'getaddress_cache';
 
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $fillable = [
         'line_1',
         'line_2',
@@ -35,10 +31,7 @@ class CachedAddress extends Model
         'expanded_result',
     ];
 
-    /**
-     * @var array
-     */
-    public static $expandedFields = [
+    public static array $expandedFields = [
         'thoroughfare',
         'building_name',
         'sub_building_name',
@@ -55,10 +48,7 @@ class CachedAddress extends Model
         'country',
     ];
 
-    /**
-     * @var array
-     */
-    public static $fields = [
+    public static array $fields = [
         'line_1',
         'line_2',
         'line_3',
@@ -68,9 +58,6 @@ class CachedAddress extends Model
         'county',
     ];
 
-    /**
-     * @return string
-     */
     public function getFormattedStringAttribute(): string
     {
         return $this->toString(true);
@@ -80,10 +67,8 @@ class CachedAddress extends Model
      * Returns a string based on the address.
      *
      * @param bool $removeEmptyElements Prevents strings having conjoining commas
-     *
-     * @return string
      */
-    public function toString($removeEmptyElements = false): string
+    public function toString(bool $removeEmptyElements = false): string
     {
         if (!$removeEmptyElements) {
             return implode(',', $this->only(self::$fields));

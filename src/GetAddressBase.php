@@ -3,54 +3,25 @@
 namespace Laralabs\GetAddress;
 
 use GuzzleHttp\Client;
-use Laralabs\GetAddress\Exceptions\ForbiddenException;
-use Laralabs\GetAddress\Exceptions\InvalidPostcodeException;
-use Laralabs\GetAddress\Exceptions\PostcodeNotFoundException;
-use Laralabs\GetAddress\Exceptions\ServerException;
-use Laralabs\GetAddress\Exceptions\TooManyRequestsException;
-use Laralabs\GetAddress\Exceptions\UnknownException;
+use Laralabs\GetAddress\Exceptions\Handler;
 
 class GetAddressBase
 {
-    /**
-     * @var string
-     */
-    protected $apiKey;
+    protected string $apiKey;
 
-    /**
-     * @var string
-     */
-    protected $adminKey;
+    protected ?string $adminKey = null;
 
-    /**
-     * @var bool
-     */
-    protected $requiresAdminKey = false;
+    protected bool $requiresAdminKey = false;
 
-    /**
-     * @var int
-     */
-    protected $delay;
+    protected int $delay = 0;
 
-    /**
-     * @var string
-     */
-    protected $url;
+    protected string $url;
 
-    /**
-     * @var bool
-     */
-    protected $expand;
+    protected bool $expand = false;
 
-    /**
-     * @var array
-     */
-    protected $queryString = [];
+    protected array $queryString = [];
 
-    /**
-     * @var \GuzzleHttp\Client
-     */
-    protected $http;
+    protected Client $http;
 
     public function __construct($apiKey = null, $adminKey = null)
     {
@@ -62,23 +33,7 @@ class GetAddressBase
         $this->http = new Client();
     }
 
-    /**
-     * Call an external resource.
-     *
-     * @param $method
-     * @param $url
-     * @param array $parameters
-     *
-     * @throws ForbiddenException
-     * @throws InvalidPostcodeException
-     * @throws PostcodeNotFoundException
-     * @throws ServerException
-     * @throws TooManyRequestsException
-     * @throws UnknownException
-     *
-     * @return array
-     */
-    public function call($method, $url, array $parameters = []): array
+    public function call(string $method, string $url, array $parameters = []): array
     {
         $this->queryString['api-key'] = $this->requiresAdminKey ? $this->adminKey : $this->apiKey;
 
@@ -93,7 +48,7 @@ class GetAddressBase
 
         if (floor($response->getStatusCode() / 100) > 2) {
             if ($response->getStatusCode() !== 429) {
-                $this->throwException($response->getStatusCode());
+                Handler::throwException($response->getStatusCode());
             }
 
             sleep($this->delay + .25);
@@ -101,40 +56,10 @@ class GetAddressBase
             $response = $this->http->{$method}($url, $parameters);
 
             if ($response->getStatusCode() !== 200) {
-                $this->throwException($response->getStatusCode());
+                Handler::throwException($response->getStatusCode());
             }
         }
 
         return json_decode($response->getBody(), true);
-    }
-
-    /**
-     * Throw exception.
-     *
-     * @param $statusCode
-     *
-     * @throws ForbiddenException
-     * @throws InvalidPostcodeException
-     * @throws PostcodeNotFoundException
-     * @throws ServerException
-     * @throws TooManyRequestsException
-     * @throws UnknownException
-     */
-    protected function throwException($statusCode): void
-    {
-        switch ($statusCode) {
-            case 400:
-                throw new InvalidPostcodeException();
-            case 401:
-                throw new ForbiddenException();
-            case 404:
-                throw new PostcodeNotFoundException();
-            case 429:
-                throw new TooManyRequestsException();
-            case 500:
-                throw new ServerException();
-            default:
-                throw new UnknownException($statusCode);
-        }
     }
 }
