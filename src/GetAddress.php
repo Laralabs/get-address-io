@@ -3,24 +3,29 @@
 namespace Laralabs\GetAddress;
 
 use Laralabs\GetAddress\Cache\Manager;
+use Laralabs\GetAddress\Http\Client;
 use Laralabs\GetAddress\Responses\Address;
 use Laralabs\GetAddress\Responses\AddressCollectionResponse;
 use Laralabs\GetAddress\Responses\AutocompleteCollectionResponse;
 use Laralabs\GetAddress\Responses\ExpandedAddress;
 use Laralabs\GetAddress\Responses\SingleAddressCollectionResponse;
 
-class GetAddress extends GetAddressBase
+class GetAddress
 {
+    protected Client $http;
+
     protected bool $cache = false;
 
     protected ?Manager $manager;
 
-    public function __construct(?string $apiKey = null)
-    {
-        parent::__construct($apiKey);
+    protected bool $expand = false;
 
+    public function __construct(Client $client)
+    {
+        $this->http = $client;
         $this->cache = config('getaddress.enable_cache');
         $this->manager = $this->cache ? new Manager() : null;
+        $this->expand = config('getaddress.expanded_results');
     }
 
     /**
@@ -43,14 +48,10 @@ class GetAddress extends GetAddressBase
             }
         }
 
-        $this->queryString['sort'] = (int) $sortNumerically;
-
-        $url = sprintf('find/%s', $postcode);
-        if ($propertyNumber !== null) {
-            $url .= sprintf('/%s', $propertyNumber);
-        }
-
-        $response = $this->createAddressCollectionResponse($postcode, $this->call('GET', $url));
+        $response = $this->createAddressCollectionResponse(
+            $postcode,
+            $this->http->get('find', [$postcode, $propertyNumber], ['sort' => (int) $sortNumerically])
+        );
 
         if ($this->cache && $propertyNumber === null) {
             $this->manager->responseToCache($response);
