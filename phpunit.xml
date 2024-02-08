@@ -30,5 +30,7 @@
         <env name="SESSION_DRIVER" value="array"/>
         <env name="QUEUE_DRIVER" value="sync"/>
         <env name="APP_KEY" value="aLwEwCKN58IdVrWv8GQv/XEN+1IEVmHxAxYS129S8oc="/>
+        <env name="GETADDRESS_API_KEY" value="ABC123"/>
+        <env name="GETADDRESS_ADMIN_KEY" value="ADMIN123"/>
     </php>
 </phpunit>
