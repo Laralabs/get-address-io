@@ -61,4 +61,20 @@ class AddressCollectionResponseTest extends TestCase
     {
         $this->assertInstanceOf(JsonResponse::class, $this->response->respond());
     }
+
+    /** @test */
+    public function it_can_instantiate_a_new_address_collection_response(): void
+    {
+        $response = new AddressCollectionResponse(
+            'B13 9SZ',
+            52.437353914285715,
+            -1.8828399142857144,
+            []
+        );
+
+        $this->assertEquals('B13 9SZ', $response->getPostcode());
+        $this->assertEquals(52.437353914285715, $response->getLatitude());
+        $this->assertEquals(-1.8828399142857144, $response->getLongitude());
+        $this->assertCount(0, $response->getAddresses());
+    }
 }
