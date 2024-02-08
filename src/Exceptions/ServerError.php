@@ -2,7 +2,7 @@
 
 namespace Laralabs\GetAddress\Exceptions;
 
-class ServerException extends \Exception
+class ServerError extends \Exception
 {
     /**
      * Exception Message.

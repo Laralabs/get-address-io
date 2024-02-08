@@ -5,22 +5,22 @@ namespace Laralabs\GetAddress\Exceptions;
 class Handler
 {
     /**
-     * @throws ServerException
-     * @throws TooManyRequestsException
-     * @throws InvalidPostcodeException
-     * @throws PostcodeNotFoundException
-     * @throws UnknownException
-     * @throws ForbiddenException
+     * @throws ServerError
+     * @throws TooManyRequests
+     * @throws InvalidPostcode
+     * @throws PostcodeNotFound
+     * @throws Unknown
+     * @throws Forbidden
      */
     public static function throwException(int $statusCode): void
     {
         throw match ($statusCode) {
-            400 => new InvalidPostcodeException(),
-            401 => new ForbiddenException(),
-            404 => new PostcodeNotFoundException(),
-            429 => new TooManyRequestsException(),
-            500 => new ServerException(),
-            default => new UnknownException($statusCode),
+            400 => new InvalidPostcode(),
+            401 => new Forbidden(),
+            404 => new PostcodeNotFound(),
+            429 => new TooManyRequests(),
+            500 => new ServerError(),
+            default => new Unknown($statusCode),
         };
     }
 }

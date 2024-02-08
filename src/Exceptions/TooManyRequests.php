@@ -2,7 +2,7 @@
 
 namespace Laralabs\GetAddress\Exceptions;
 
-class TooManyRequestsException extends \Exception
+class TooManyRequests extends \Exception
 {
     /**
      * Exception Message.

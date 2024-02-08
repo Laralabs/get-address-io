@@ -2,7 +2,7 @@
 
 namespace Laralabs\GetAddress\Exceptions;
 
-class UnknownException extends \Exception
+class Unknown extends \Exception
 {
     /**
      * Message.

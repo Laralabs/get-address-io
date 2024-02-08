@@ -2,7 +2,7 @@
 
 namespace Laralabs\GetAddress\Exceptions;
 
-class ForbiddenException extends \Exception
+class Forbidden extends \Exception
 {
     /**
      * Exception Message.
