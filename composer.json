@@ -20,7 +20,8 @@
       "orchestra/testbench": "^8.0",
       "phpunit/phpunit": "^9.5",
       "squizlabs/php_codesniffer": "^3.7",
-      "clntdev/coding-standards": "^1.1.0"
+      "clntdev/coding-standards": "^1.1.0",
+        "spatie/phpunit-snapshot-assertions": "v4.x-dev"
     },
     "autoload": {
       "psr-4": {
