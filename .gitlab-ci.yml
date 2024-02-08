@@ -72,6 +72,13 @@ docker:php82:
     PHP_VERSION: "8.2"
     <<: *docker_variables
 
+docker:php83:
+  <<: *docker_base
+  variables:
+    SERVICE_NAME: php
+    PHP_VERSION: "8.3"
+    <<: *docker_variables
+
 # ======================
 # Build jobs
 # ======================
@@ -113,5 +120,11 @@ test:php81:
 test:php82:
   <<: *test_base
   image: $CI_REGISTRY_IMAGE/php:8.2
+  variables:
+    PHPUNIT_VERSION: "9.5"
+
+test:php83:
+  <<: *test_base
+  image: $CI_REGISTRY_IMAGE/php:8.3
   variables:
     PHPUNIT_VERSION: "9.5"
