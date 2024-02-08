@@ -2,6 +2,7 @@
 
 namespace Laralabs\GetAddress\Tests\Unit\Responses;
 
+use Illuminate\Http\JsonResponse;
 use Laralabs\GetAddress\Responses\Address;
 use Laralabs\GetAddress\Responses\AddressCollectionResponse;
 use Laralabs\GetAddress\Tests\Support\Responses\ResponseFactory;
@@ -53,5 +54,11 @@ class AddressCollectionResponseTest extends TestCase
     public function it_can_transform_to_the_expected_array(): void
     {
         $this->assertMatchesJsonSnapshot($this->response->toArray());
+    }
+
+    /** @test */
+    public function it_can_get_a_json_response(): void
+    {
+        $this->assertInstanceOf(JsonResponse::class, $this->response->respond());
     }
 }
