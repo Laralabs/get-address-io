@@ -2,10 +2,14 @@
 
 namespace Laralabs\GetAddress\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Laralabs\GetAddress\Factories\CachedAddressFactory;
 
 class CachedAddress extends Model
 {
+    use HasFactory;
+
     /** @var string */
     protected $table = 'getaddress_cache';
 
@@ -70,10 +74,15 @@ class CachedAddress extends Model
      */
     public function toString(bool $removeEmptyElements = false): string
     {
-        if (!$removeEmptyElements) {
+        if ($removeEmptyElements === false) {
             return implode(',', $this->only(self::$fields));
         }
 
         return implode(', ', array_filter($this->only(self::$fields)));
+    }
+
+    protected static function newFactory(): CachedAddressFactory
+    {
+        return new CachedAddressFactory;
     }
 }
