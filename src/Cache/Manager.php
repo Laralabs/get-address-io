@@ -2,6 +2,7 @@
 
 namespace Laralabs\GetAddress\Cache;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Laralabs\GetAddress\Models\CachedAddress;
 use Laralabs\GetAddress\Responses\Address;
@@ -20,18 +21,16 @@ class Manager
         $this->expand = config('getaddress.expanded_results');
     }
 
-    public function checkCache(string $postcode, string|int $property): ?array
+    public function checkCache(string $postcode, null|string|int $property): ?array
     {
-        $params = ['postcode' => $postcode, 'property' => $property];
-
-        $results = CachedAddress::where(static function ($query) use ($params) {
-            $params['property'] !== null ? $query->where('postcode', '=', $params['postcode'])
-                ->where('line_1', 'LIKE', '%'.$params['property'].'%') : $query->where(
-                    'postcode',
-                    '=',
-                    $params['postcode']
-            );
-        })->get();
+        $results = CachedAddress::query()->when(
+            filled($property),
+            static fn (Builder $query): Builder => $query->where(
+                'line_1',
+                'LIKE',
+                '%'.$property.'%'
+            )
+        )->where('postcode', $postcode)->get();
 
         if (count($results) >= 1) {
             return $this->checkExpiry($results);
@@ -52,14 +51,16 @@ class Manager
                 ]));
             }
 
-            if ($address instanceof Address) {
-                CachedAddress::create(array_merge($address->toArray(), [
-                    'longitude'       => $response->getLongitude(),
-                    'latitude'        => $response->getLatitude(),
-                    'postcode'        => $response->getPostcode(),
-                    'expanded_result' => false,
-                ]));
+            if ($address instanceof Address === false) {
+                continue;
             }
+
+            CachedAddress::create(array_merge($address->toArray(), [
+                'longitude'       => $response->getLongitude(),
+                'latitude'        => $response->getLatitude(),
+                'postcode'        => $response->getPostcode(),
+                'expanded_result' => false,
+            ]));
         }
 
         return $response;
@@ -81,17 +82,18 @@ class Manager
     protected function formatCachedAddresses(Collection $results): array
     {
         return [
+            'postcode' => $results->first()->postcode,
             'longitude' => (float) $results->first()->longitude,
             'latitude'  => (float) $results->first()->latitude,
-            'addresses' => $results->map(function ($address) {
-                if ($this->expand) {
-                    return array_merge([
-                        'formatted_string'  => $address->formatted_string,
-                        'formatted_address' => array_values($address->only(CachedAddress::$fields)),
-                    ], $address->only(CachedAddress::$expandedFields));
+            'addresses' => $results->transform(function ($address) {
+                if ($this->expand === false) {
+                    return $address->formatted_string;
                 }
 
-                return $address->formatted_string;
+                return array_merge([
+                    'formatted_string'  => $address->formatted_string,
+                    'formatted_address' => array_values($address->only(CachedAddress::$fields)),
+                ], $address->only(CachedAddress::$expandedFields));
             })->toArray(),
         ];
     }

@@ -26,6 +26,7 @@
     "autoload": {
       "psr-4": {
         "Laralabs\\GetAddress\\": "src/",
+        "Laralabs\\GetAddress\\Factories\\": "database/factories",
         "Laralabs\\GetAddress\\Tests\\": "tests/"
       },
       "files": [
