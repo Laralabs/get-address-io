@@ -22,10 +22,6 @@ class GetAddressServiceProvider extends ServiceProvider
         $this->app->bind('getaddress', function (Application $app, array $parameters): GetAddress { //phpcs:ignore
             return new GetAddress(app(Client::class, ['apiKey' => $parameters['apiKey'] ?? null]));
         });
-
-        $this->app->bind('getaddress-admin', function (Application $app, array $parameters): GetAddressAdmin { //phpcs:ignore
-            return new GetAddressAdmin($parameters['adminKey']);
-        });
     }
 
     public function boot(): void
