@@ -83,6 +83,16 @@ class GetAddressTest extends TestCase
     }
 
     /** @test */
+    public function it_can_perform_an_autocomplete_request_and_respond_with_json_response(): void
+    {
+        ResponseFactory::make('successfulAutocompleteResponse.json')->getHttpFake();
+
+        $results = GetAddress::autocomplete('32 Clarence');
+
+        $this->assertCount(6, $results->respond()->getOriginalContent()['suggestions']);
+    }
+
+    /** @test */
     public function it_can_perform_a_get_request_for_an_autocomplete_result_item(): void
     {
         ResponseFactory::make('successfulGetResponse.json')->getHttpFake();
