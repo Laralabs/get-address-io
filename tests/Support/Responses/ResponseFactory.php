@@ -2,7 +2,9 @@
 
 namespace Laralabs\GetAddress\Tests\Support\Responses;
 
+use Illuminate\Http\Client\Factory;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Http;
 use Laralabs\GetAddress\Responses\Address;
 use Laralabs\GetAddress\Responses\AddressCollectionResponse;
 
@@ -24,6 +26,18 @@ class ResponseFactory
     public static function make(string $fileName): self
     {
         return new self($fileName);
+    }
+
+    public function getHttpFake(?array $attributes = null): Factory
+    {
+        return Http::fake($attributes ?? [
+            '*' => Http::response(ResponseFactory::make($this->fileName)->getResponse()),
+        ]);
+    }
+
+    public function getResponse(): string
+    {
+        return $this->response;
     }
 
     public function makeAddressCollectionResponse(): AddressCollectionResponse
