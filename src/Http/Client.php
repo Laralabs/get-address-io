@@ -53,6 +53,22 @@ class Client
         return $response;
     }
 
+    public function post(string $endpoint, string|array $term, array $parameters = []): ?array
+    {
+        $url = $this->buildUrl($endpoint, $term);
+        $queryParameters = ['api-key' => $this->getApiKey()];
+
+        $response = $this->call($url, 'post', $queryParameters, $parameters);
+
+        if ($response === null && $this->attempts === 0) {
+            $this->attempts = 1;
+
+            return $this->call($url, 'post', $queryParameters, $parameters);
+        }
+
+        return $response;
+    }
+
     private function call(
         string $url,
         string $method,

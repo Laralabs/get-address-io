@@ -15,11 +15,6 @@ class AutocompleteCollectionResponse
 
     public function all(): ?array
     {
-        return $this->getSuggestions();
-    }
-
-    public function getSuggestions(): ?array
-    {
         return $this->suggestions;
     }
 

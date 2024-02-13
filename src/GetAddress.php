@@ -60,20 +60,16 @@ class GetAddress
         return $response;
     }
 
-    public function autocomplete(string $term, ?array $parameters = null): AutocompleteCollectionResponse
+    public function autocomplete(string $term, array $parameters = []): AutocompleteCollectionResponse
     {
         return new AutocompleteCollectionResponse(
-            $this->call(
-                'POST',
-                sprintf('autocomplete/%s', $term),
-                $parameters
-            )['suggestions'] ?? null
+            $this->http->post('autocomplete', $term, $parameters)['suggestions'] ?? null
         );
     }
 
     public function get(string $id): SingleAddressCollectionResponse
     {
-        return new SingleAddressCollectionResponse($this->call('GET', sprintf('get/%s', $id)));
+        return new SingleAddressCollectionResponse($this->http->get('get', $id));
     }
 
     /** Override expanded results. */

@@ -8,10 +8,11 @@ use Laralabs\GetAddress\Facades\GetAddress;
 use Laralabs\GetAddress\Models\CachedAddress;
 use Laralabs\GetAddress\Tests\Support\Responses\ResponseFactory;
 use Laralabs\GetAddress\Tests\TestCase;
+use Spatie\Snapshots\MatchesSnapshots;
 
 class GetAddressTest extends TestCase
 {
-    use LazilyRefreshDatabase;
+    use LazilyRefreshDatabase, MatchesSnapshots;
 
     /** @test */
     public function it_can_do_a_postcode_lookup_using_find(): void
@@ -69,5 +70,28 @@ class GetAddressTest extends TestCase
 
         $this->assertCount(2, $results->getAddresses());
         $this->assertEquals('B13 9SZ', $results->getPostcode());
+    }
+
+    /** @test */
+    public function it_can_perform_an_autocomplete_request(): void
+    {
+        ResponseFactory::make('successfulAutocompleteResponse.json')->getHttpFake();
+
+        $results = GetAddress::autocomplete('32 Clarence');
+
+        $this->assertCount(6, $results->all());
+    }
+
+    /** @test */
+    public function it_can_perform_a_get_request_for_an_autocomplete_result_item(): void
+    {
+        ResponseFactory::make('successfulGetResponse.json')->getHttpFake();
+
+        $results = GetAddress::get('NmNhMTg3ZjBkZmQ1OTg0IDEwMzgwMzg1IDdjZmFmNTA5OTI3YjkzZQ==');
+
+        $this->assertEquals('SK10 5GR', $results->getPostcode());
+        $this->assertEquals(53.2998, $results->getLatitude());
+        $this->assertEquals(-2.102, $results->getLongitude());
+        $this->assertMatchesJsonSnapshot($results->getAddress());
     }
 }
