@@ -42,15 +42,24 @@ class Client
             $queryParameters['expand'] = true;
         }
 
-        $response = $this->handleResponse(Http::withQueryParameters($queryParameters)->get($url));
+        $response = $this->call($url, 'get', $queryParameters);
 
         if ($response === null && $this->attempts === 0) {
             $this->attempts = 1;
 
-            return $this->handleResponse(Http::withQueryParameters($queryParameters)->get($url));
+            return $this->call($url, 'get', $queryParameters);
         }
 
         return $response;
+    }
+
+    private function call(
+        string $url,
+        string $method,
+        array $queryParameters = [],
+        array $parameters = []
+    ): mixed {
+        return $this->handleResponse(Http::withQueryParameters($queryParameters)->$method($url, $parameters ?? null));
     }
 
     private function handleResponse(PromiseInterface|Response $response): mixed
