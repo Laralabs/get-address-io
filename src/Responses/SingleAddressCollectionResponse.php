@@ -2,8 +2,6 @@
 
 namespace Laralabs\GetAddress\Responses;
 
-use Illuminate\Support\Arr;
-
 class SingleAddressCollectionResponse extends AddressCollectionResponse
 {
     protected ?string $postcode;
@@ -21,7 +19,7 @@ class SingleAddressCollectionResponse extends AddressCollectionResponse
         $this->longitude = $address['longitude'] ?? null;
         $this->address = $address;
 
-        parent::__construct($this->postcode, $this->latitude, $this->longitude, Arr::wrap($this->address));
+        parent::__construct($this->postcode, $this->latitude, $this->longitude, [$this->address]);
     }
 
     public function getAddress(): array
