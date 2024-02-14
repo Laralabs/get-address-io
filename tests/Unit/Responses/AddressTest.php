@@ -111,4 +111,13 @@ class AddressTest extends TestCase
             (string) $this->address
         );
     }
+
+    /** @test */
+    public function it_can_can_check_if_two_address_responses_are_the_same(): void
+    {
+        $address = ResponseFactory::make('singleFindResponse.json')
+            ->makeAddressCollectionResponse()->getAddresses()[0];
+
+        $this->assertTrue($this->address->sameAs($address));
+    }
 }
