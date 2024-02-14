@@ -12,19 +12,22 @@ class SingleAddressCollectionResponse extends AddressCollectionResponse
 
     protected array $address = [];
 
-    public function __construct(array $address = [])
+    protected bool $expand;
+
+    public function __construct(array $address = [], bool $expand = false)
     {
         $this->postcode = $address['postcode'] ?? null;
         $this->latitude = $address['latitude'] ?? null;
         $this->longitude = $address['longitude'] ?? null;
         $this->address = $address;
+        $this->expand = $expand;
 
         parent::__construct($this->postcode, $this->latitude, $this->longitude, [$this->address]);
     }
 
-    public function getAddress(): Address
+    public function getAddress(): ExpandedAddress|Address
     {
-        return new Address($this->address);
+        return $this->expand ? new ExpandedAddress($this->address) : new Address($this->address);
     }
 
     public function toArray(): array

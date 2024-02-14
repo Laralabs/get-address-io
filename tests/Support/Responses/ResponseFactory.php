@@ -7,6 +7,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
 use Laralabs\GetAddress\Responses\Address;
 use Laralabs\GetAddress\Responses\AddressCollectionResponse;
+use Laralabs\GetAddress\Responses\ExpandedAddress;
 use Laralabs\GetAddress\Responses\SingleAddressCollectionResponse;
 
 class ResponseFactory
@@ -17,16 +18,19 @@ class ResponseFactory
 
     protected ?array $decodedResponse = null;
 
-    public function __construct(string $fileName)
+    protected bool $expand = false;
+
+    public function __construct(string $fileName, bool $expand = false)
     {
         $this->fileName = $fileName;
         $this->response = file_get_contents(__DIR__ . '/examples/' . $fileName);
         $this->decodedResponse = json_decode($this->response, true);
+        $this->expand = $expand;
     }
 
-    public static function make(string $fileName): self
+    public static function make(string $fileName, bool $expand = false): self
     {
-        return new self($fileName);
+        return new self($fileName, $expand);
     }
 
     public function getHttpFake(?array $attributes = null): Factory
@@ -41,6 +45,11 @@ class ResponseFactory
         return $this->response;
     }
 
+    public function getDecodedResponse(): array
+    {
+        return $this->decodedResponse;
+    }
+
     public function makeAddressCollectionResponse(): AddressCollectionResponse
     {
         return new AddressCollectionResponse(
@@ -53,13 +62,15 @@ class ResponseFactory
 
     public function makeSingleAddressCollectionResponse(): SingleAddressCollectionResponse
     {
-        return new SingleAddressCollectionResponse($this->decodedResponse);
+        return new SingleAddressCollectionResponse($this->decodedResponse, $this->expand);
     }
 
     private function hydrateAddresses(): array
     {
         return collect($this->decodedResponse['addresses'])->transform(
-            static fn (array $address): Address => new Address(array_values($address))
+            static fn (array $address): ExpandedAddress|Address => $this->expand ? new ExpandedAddress(
+                $address
+            ) : new Address(array_values($address))
         )->toArray();
     }
 }

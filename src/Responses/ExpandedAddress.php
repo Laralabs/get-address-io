@@ -53,8 +53,12 @@ class ExpandedAddress
         return $this->address['line_4'];
     }
 
-    public function getLine(int $line): string
+    public function getLine(int $line): ?string
     {
+        if ($line > 4) {
+            return null;
+        }
+
         return $this->address['line_' . $line];
     }
 

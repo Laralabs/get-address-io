@@ -69,10 +69,9 @@ class GetAddress
 
     public function get(string $id): SingleAddressCollectionResponse
     {
-        return new SingleAddressCollectionResponse($this->http->get('get', $id));
+        return new SingleAddressCollectionResponse($this->http->get('get', $id), $this->expand);
     }
 
-    /** Override expanded results. */
     public function expand(): self
     {
         $this->expand = true;
