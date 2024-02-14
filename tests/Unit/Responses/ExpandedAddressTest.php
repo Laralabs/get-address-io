@@ -104,6 +104,12 @@ class ExpandedAddressTest extends TestCase
     }
 
     /** @test */
+    public function it_can_get_the_district(): void
+    {
+        $this->assertEquals('Cheshire East', $this->address->getDistrict());
+    }
+
+    /** @test */
     public function it_can_get_the_country(): void
     {
         $this->assertEquals('England', $this->address->getCountry());
@@ -134,6 +140,15 @@ class ExpandedAddressTest extends TestCase
         $this->assertEquals(
             'Apartment 32, Clarence Mill, Clarence Road, Bollington, Macclesfield, Cheshire',
             $this->address->toString()
+        );
+    }
+
+    /** @test */
+    public function it_can_cast_the_expanded_address_to_a_string(): void
+    {
+        $this->assertEquals(
+            'Apartment 32, Clarence Mill, Clarence Road, Bollington, Macclesfield, Cheshire',
+            (string) $this->address
         );
     }
 }
