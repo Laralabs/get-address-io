@@ -107,11 +107,6 @@ class Address
         ));
     }
 
-    /**
-     * Compare two addresses to see if they are equal.
-     *
-     * @param \Laralabs\GetAddress\Responses\Address $address Address to compare
-     */
     public function sameAs(self $address): bool
     {
         return !array_diff($this->address, $address->toArray());

@@ -57,6 +57,15 @@ class AddressCollectionResponseTest extends TestCase
     }
 
     /** @test */
+    public function it_can_transform_to_the_expected_array_with_expanded_addresses(): void
+    {
+        $response = ResponseFactory::make('successfulFindResponse.json', true)
+            ->makeAddressCollectionResponse();
+
+        $this->assertMatchesJsonSnapshot($response->toArray());
+    }
+
+    /** @test */
     public function it_can_get_a_json_response(): void
     {
         $this->assertInstanceOf(JsonResponse::class, $this->response->respond());

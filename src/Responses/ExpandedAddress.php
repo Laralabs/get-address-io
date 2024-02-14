@@ -104,12 +104,14 @@ class ExpandedAddress
 
     public function toString(bool $removeEmptyElements = false): string
     {
+        $separator = isset($this->address['formatted_address']) ? ', ' : ',';
+
         if ($removeEmptyElements === false) {
-            return implode(', ', $this->address['formatted_address']);
+            return implode($separator, $this->address['formatted_address']);
         }
 
-        return implode(', ', array_filter(
-            $this->address['formatted_address'],
+        return implode($separator, array_filter(
+            $this->address['formatted_address'] ?? $this->address,
             static fn (?string $value): bool => filled($value)
         ));
     }

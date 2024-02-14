@@ -1,0 +1,147 @@
+{
+    "postcode": "B13 9SZ",
+    "latitude": 52.437353914285715,
+    "longitude": -1.8828399142857144,
+    "addresses": [
+        {
+            "formatted_string": "32 Clarence Road, Moseley, Birmingham, West Midlands",
+            "line_1": "32 Clarence Road",
+            "line_2": " ",
+            "line_3": " ",
+            "line_4": " ",
+            "locality": " Moseley",
+            "town_or_city": " Birmingham",
+            "county": " West Midlands"
+        },
+        {
+            "formatted_string": "32a Clarence Road, Moseley, Birmingham, West Midlands",
+            "line_1": "32a Clarence Road",
+            "line_2": " ",
+            "line_3": " ",
+            "line_4": " ",
+            "locality": " Moseley",
+            "town_or_city": " Birmingham",
+            "county": " West Midlands"
+        },
+        {
+            "formatted_string": "34 Clarence Road, Moseley, Birmingham, West Midlands",
+            "line_1": "34 Clarence Road",
+            "line_2": " ",
+            "line_3": " ",
+            "line_4": " ",
+            "locality": " Moseley",
+            "town_or_city": " Birmingham",
+            "county": " West Midlands"
+        },
+        {
+            "formatted_string": "36 Clarence Road, Moseley, Birmingham, West Midlands",
+            "line_1": "36 Clarence Road",
+            "line_2": " ",
+            "line_3": " ",
+            "line_4": " ",
+            "locality": " Moseley",
+            "town_or_city": " Birmingham",
+            "county": " West Midlands"
+        },
+        {
+            "formatted_string": "38 Clarence Road, Moseley, Birmingham, West Midlands",
+            "line_1": "38 Clarence Road",
+            "line_2": " ",
+            "line_3": " ",
+            "line_4": " ",
+            "locality": " Moseley",
+            "town_or_city": " Birmingham",
+            "county": " West Midlands"
+        },
+        {
+            "formatted_string": "40 Clarence Road, Moseley, Birmingham, West Midlands",
+            "line_1": "40 Clarence Road",
+            "line_2": " ",
+            "line_3": " ",
+            "line_4": " ",
+            "locality": " Moseley",
+            "town_or_city": " Birmingham",
+            "county": " West Midlands"
+        },
+        {
+            "formatted_string": "41 Clarence Road, Moseley, Birmingham, West Midlands",
+            "line_1": "41 Clarence Road",
+            "line_2": " ",
+            "line_3": " ",
+            "line_4": " ",
+            "locality": " Moseley",
+            "town_or_city": " Birmingham",
+            "county": " West Midlands"
+        },
+        {
+            "formatted_string": "43 Clarence Road, Moseley, Birmingham, West Midlands",
+            "line_1": "43 Clarence Road",
+            "line_2": " ",
+            "line_3": " ",
+            "line_4": " ",
+            "locality": " Moseley",
+            "town_or_city": " Birmingham",
+            "county": " West Midlands"
+        },
+        {
+            "formatted_string": "45 Clarence Road, Moseley, Birmingham, West Midlands",
+            "line_1": "45 Clarence Road",
+            "line_2": " ",
+            "line_3": " ",
+            "line_4": " ",
+            "locality": " Moseley",
+            "town_or_city": " Birmingham",
+            "county": " West Midlands"
+        },
+        {
+            "formatted_string": "47 Clarence Road, Moseley, Birmingham, West Midlands",
+            "line_1": "47 Clarence Road",
+            "line_2": " ",
+            "line_3": " ",
+            "line_4": " ",
+            "locality": " Moseley",
+            "town_or_city": " Birmingham",
+            "county": " West Midlands"
+        },
+        {
+            "formatted_string": "49 Clarence Road, Moseley, Birmingham, West Midlands",
+            "line_1": "49 Clarence Road",
+            "line_2": " ",
+            "line_3": " ",
+            "line_4": " ",
+            "locality": " Moseley",
+            "town_or_city": " Birmingham",
+            "county": " West Midlands"
+        },
+        {
+            "formatted_string": "51 Clarence Road, Moseley, Birmingham, West Midlands",
+            "line_1": "51 Clarence Road",
+            "line_2": " ",
+            "line_3": " ",
+            "line_4": " ",
+            "locality": " Moseley",
+            "town_or_city": " Birmingham",
+            "county": " West Midlands"
+        },
+        {
+            "formatted_string": "Flat 1, 36 Clarence Road, Moseley, Birmingham, West Midlands",
+            "line_1": "Flat 1",
+            "line_2": " 36 Clarence Road",
+            "line_3": " ",
+            "line_4": " ",
+            "locality": " Moseley",
+            "town_or_city": " Birmingham",
+            "county": " West Midlands"
+        },
+        {
+            "formatted_string": "Flat 2, 36 Clarence Road, Moseley, Birmingham, West Midlands",
+            "line_1": "Flat 2",
+            "line_2": " 36 Clarence Road",
+            "line_3": " ",
+            "line_4": " ",
+            "locality": " Moseley",
+            "town_or_city": " Birmingham",
+            "county": " West Midlands"
+        }
+    ]
+}

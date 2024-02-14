@@ -6,20 +6,12 @@ use Illuminate\Http\JsonResponse;
 
 class AddressCollectionResponse
 {
-    protected ?string $postcode;
-
-    protected ?float $latitude;
-
-    protected ?float $longitude;
-
-    protected array $addresses = [];
-
-    public function __construct(?string $postcode, ?float $latitude, ?float $longitude, array $addresses = [])
-    {
-        $this->postcode = $postcode;
-        $this->latitude = $latitude;
-        $this->longitude = $longitude;
-        $this->addresses = $addresses;
+    public function __construct(
+        protected ?string $postcode,
+        protected ?float $latitude,
+        protected ?float $longitude,
+        protected array $addresses = []
+    ) {
     }
 
     public function getPostcode(): ?string
