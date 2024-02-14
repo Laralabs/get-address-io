@@ -108,7 +108,10 @@ class ExpandedAddress
             return implode(', ', $this->address['formatted_address']);
         }
 
-        return implode(', ', array_filter($this->address['formatted_address']));
+        return implode(', ', array_filter(
+            $this->address['formatted_address'],
+            static fn (?string $value): bool => filled($value)
+        ));
     }
 
     public function __toString(): string

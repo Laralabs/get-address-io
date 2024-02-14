@@ -31,9 +31,13 @@ class Address
         return $this->address[3] ?? $this->address['line_4'];
     }
 
-    public function getLine(int $line): string
+    public function getLine(int $line): ?string
     {
-        return $this->address[$line - 1];
+        if ($line > 4) {
+            return null;
+        }
+
+        return $this->address[$line - 1] ?? null;
     }
 
     public function getLocality(): string
@@ -56,14 +60,14 @@ class Address
         return $this->address[6] ?? $this->address['county'];
     }
 
-    public function getDistrict(): string
+    public function getDistrict(): ?string
     {
-        return $this->address[7] ?? $this->address['district'];
+        return $this->address[7] ?? $this->address['district'] ?? null;
     }
 
-    public function getCountry(): string
+    public function getCountry(): ?string
     {
-        return $this->address[8] ?? $this->address['country'];
+        return $this->address[8] ?? $this->address['country'] ?? null;
     }
 
     public function isResidential(): bool
@@ -97,9 +101,10 @@ class Address
             return implode(',', $this->address);
         }
 
-        return implode(',', array_filter($this->address, function ($value) {
-            return trim($value) !== '';
-        }));
+        return implode(',', array_filter(
+            $this->address,
+            static fn (?string $value): bool => filled($value)
+        ));
     }
 
     /**

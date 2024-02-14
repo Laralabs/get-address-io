@@ -68,7 +68,7 @@ class ResponseFactory
     private function hydrateAddresses(): array
     {
         return collect($this->decodedResponse['addresses'])->transform(
-            static fn (array $address): ExpandedAddress|Address => $this->expand ? new ExpandedAddress(
+            fn (array $address): ExpandedAddress|Address => $this->expand ? new ExpandedAddress(
                 $address
             ) : new Address(array_values($address))
         )->toArray();
