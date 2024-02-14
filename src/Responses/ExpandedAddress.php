@@ -105,15 +105,10 @@ class ExpandedAddress
     public function toString(bool $removeEmptyElements = false): string
     {
         if ($removeEmptyElements === false) {
-            return implode(',', $this->address['formatted_address']);
+            return implode(', ', $this->address['formatted_address']);
         }
 
         return implode(', ', array_filter($this->address['formatted_address']));
-    }
-
-    public function sameAs(Address $address): bool
-    {
-        return count(array_diff($this->address, $address->toArray())) === 0;
     }
 
     public function __toString(): string

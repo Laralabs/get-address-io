@@ -118,4 +118,22 @@ class ExpandedAddressTest extends TestCase
             $this->address->toArray()
         );
     }
+
+    /** @test */
+    public function it_can_transform_expanded_address_to_string_and_remove_empty_elements(): void
+    {
+        $this->assertEquals(
+            'Apartment 32, Clarence Mill, Clarence Road, Bollington, Macclesfield, Cheshire',
+            $this->address->toString(true)
+        );
+    }
+
+    /** @test */
+    public function it_can_transform_expanded_address_to_string(): void
+    {
+        $this->assertEquals(
+            'Apartment 32, Clarence Mill, Clarence Road, Bollington, Macclesfield, Cheshire',
+            $this->address->toString()
+        );
+    }
 }
