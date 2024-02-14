@@ -73,6 +73,23 @@ class GetAddressTest extends TestCase
     }
 
     /** @test */
+    public function it_can_do_a_postcode_lookup_using_find_and_store_response_in_cache(): void
+    {
+        config()->set('getaddress.enable_cache', true);
+
+        ResponseFactory::make('successfulFindResponse.json')->getHttpFake();
+
+        $this->assertEquals(0, CachedAddress::count());
+
+        $results = get_address()->expand()->find('B13 9SZ');
+
+        $this->assertEquals(14, CachedAddress::count());
+
+        $this->assertCount(14, $results->getAddresses());
+        $this->assertEquals('B13 9SZ', $results->getPostcode());
+    }
+
+    /** @test */
     public function it_can_perform_an_autocomplete_request(): void
     {
         ResponseFactory::make('successfulAutocompleteResponse.json')->getHttpFake();
