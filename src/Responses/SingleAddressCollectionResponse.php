@@ -22,9 +22,9 @@ class SingleAddressCollectionResponse extends AddressCollectionResponse
         parent::__construct($this->postcode, $this->latitude, $this->longitude, [$this->address]);
     }
 
-    public function getAddress(): array
+    public function getAddress(): Address
     {
-        return $this->address;
+        return new Address($this->address);
     }
 
     public function toArray(): array

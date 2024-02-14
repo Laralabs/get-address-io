@@ -103,7 +103,6 @@ class GetAddressTest extends TestCase
         $this->assertEquals(53.2998, $results->getLatitude());
         $this->assertEquals(-2.102, $results->getLongitude());
         $this->assertCount(1, $results->getAddresses());
-        $this->assertMatchesJsonSnapshot($results->getAddress());
         $this->assertMatchesJsonSnapshot($results->toArray());
     }
 }

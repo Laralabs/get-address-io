@@ -7,6 +7,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
 use Laralabs\GetAddress\Responses\Address;
 use Laralabs\GetAddress\Responses\AddressCollectionResponse;
+use Laralabs\GetAddress\Responses\SingleAddressCollectionResponse;
 
 class ResponseFactory
 {
@@ -48,6 +49,11 @@ class ResponseFactory
             Arr::get($this->decodedResponse, 'longitude'),
             $this->hydrateAddresses()
         );
+    }
+
+    public function makeSingleAddressCollectionResponse(): SingleAddressCollectionResponse
+    {
+        return new SingleAddressCollectionResponse($this->decodedResponse);
     }
 
     private function hydrateAddresses(): array

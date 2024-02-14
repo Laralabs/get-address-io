@@ -13,22 +13,22 @@ class Address
 
     public function getLine1(): string
     {
-        return $this->address[0];
+        return $this->address[0] ?? $this->address['line_1'];
     }
 
     public function getLine2(): string
     {
-        return $this->address[1];
+        return $this->address[1] ?? $this->address['line_2'];
     }
 
     public function getLine3(): string
     {
-        return $this->address[2];
+        return $this->address[2] ?? $this->address['line_3'];
     }
 
     public function getLine4(): string
     {
-        return $this->address[3];
+        return $this->address[3] ?? $this->address['line_4'];
     }
 
     public function getLine(int $line): string
@@ -38,22 +38,37 @@ class Address
 
     public function getLocality(): string
     {
-        return $this->address[4];
+        return $this->address[4] ?? $this->address['locality'];
     }
 
     public function getTown(): string
     {
-        return $this->address[5];
+        return $this->address[5] ?? $this->address['town_or_city'];
     }
 
     public function getCity(): string
     {
-        return $this->address[5];
+        return $this->address[5] ?? $this->address['town_or_city'];
     }
 
     public function getCounty(): string
     {
-        return $this->address[6];
+        return $this->address[6] ?? $this->address['county'];
+    }
+
+    public function getDistrict(): string
+    {
+        return $this->address[7] ?? $this->address['district'];
+    }
+
+    public function getCountry(): string
+    {
+        return $this->address[8] ?? $this->address['country'];
+    }
+
+    public function isResidential(): bool
+    {
+        return $this->address[9] ?? $this->address['residential'];
     }
 
     /**
