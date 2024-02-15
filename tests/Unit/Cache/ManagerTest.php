@@ -34,6 +34,18 @@ class ManagerTest extends TestCase
     }
 
     /** @test */
+    public function it_can_check_for_expanded_cached_addresses_with_postcode(): void
+    {
+        CachedAddress::factory()->create(['line_1' => '1 Example Street', 'postcode' => 'ABC 123']);
+        CachedAddress::factory()->create(['line_1' => '2 Example Street', 'postcode' => 'ABC 123']);
+        CachedAddress::factory()->create(['line_1' => '3 Example Street', 'postcode' => 'ABC 321']);
+
+        $result = $this->manager->expand()->checkCache('ABC 123', null);
+
+        $this->assertCount(2, $result['addresses'] ?? 0);
+    }
+
+    /** @test */
     public function it_can_check_for_cached_addresses_with_postcode_and_property_number(): void
     {
         CachedAddress::factory()->create(['line_1' => '1 Example Street', 'postcode' => 'ABC 123']);
