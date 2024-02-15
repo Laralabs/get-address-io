@@ -5,6 +5,7 @@ namespace Laralabs\GetAddress\Tests\Feature;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Laralabs\GetAddress\Cache\Manager;
+use Laralabs\GetAddress\Exceptions\ServerError;
 use Laralabs\GetAddress\Facades\GetAddress;
 use Laralabs\GetAddress\Models\CachedAddress;
 use Laralabs\GetAddress\Tests\Support\Responses\ResponseFactory;
@@ -177,5 +178,20 @@ class GetAddressTest extends TestCase
         $results = GetAddress::get('NmNhMTg3ZjBkZmQ1OTg0IDEwMzgwMzg1IDdjZmFmNTA5OTI3YjkzZQ==');
 
         $this->assertCount(1, $results->getAddresses());
+    }
+
+    /** @test */
+    public function it_can_handle_a_server_error_and_throw_an_exception(): void
+    {
+        ResponseFactory::make('successfulGetResponse.json')->getHttpErrorFake(500);
+
+        try {
+            GetAddress::get('NmNhMTg3ZjBkZmQ1OTg0IDEwMzgwMzg1IDdjZmFmNTA5OTI3YjkzZQ==');
+        } catch (ServerError $exception) {
+            $this->assertEquals('getAddress.io is currently having issues.', $exception->getMessage());
+            return;
+        }
+
+        $this->fail('ServerError exception not thrown');
     }
 }
