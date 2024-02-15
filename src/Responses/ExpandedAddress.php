@@ -2,7 +2,9 @@
 
 namespace Laralabs\GetAddress\Responses;
 
-class ExpandedAddress
+use Illuminate\Contracts\Support\Arrayable;
+
+class ExpandedAddress implements Arrayable
 {
     public function __construct(protected array $address = [])
     {

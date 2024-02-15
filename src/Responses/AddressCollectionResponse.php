@@ -40,15 +40,12 @@ class AddressCollectionResponse
             'postcode'  => $this->postcode,
             'latitude'  => $this->latitude,
             'longitude' => $this->longitude,
-            'addresses' => array_map(static function ($address) {
+            'addresses' => array_map(static function ($address): string|array {
                 if ($address instanceof Address) {
                     return $address->toString(true);
                 }
-                if ($address instanceof ExpandedAddress) {
-                    return $address->toArray();
-                }
 
-                return $address;
+                return (array) $address;
             }, $this->addresses),
         ];
     }
