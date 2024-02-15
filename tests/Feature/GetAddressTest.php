@@ -148,4 +148,34 @@ class GetAddressTest extends TestCase
         $this->assertCount(1, $results->getAddresses());
         $this->assertMatchesJsonSnapshot($results->toArray());
     }
+
+    /** @test */
+    public function it_can_handle_a_429_error_and_reattempt_on_find(): void
+    {
+        ResponseFactory::make('successfulFindResponse.json')->getHttpErrorFake(429);
+
+        $results = get_address()->find('B13 9SZ');
+
+        $this->assertCount(14, $results->getAddresses());
+    }
+
+    /** @test */
+    public function it_can_handle_a_429_error_and_reattempt_on_autocomplete(): void
+    {
+        ResponseFactory::make('successfulAutocompleteResponse.json')->getHttpErrorFake(429);
+
+        $results = GetAddress::autocomplete('32 Clarence');
+
+        $this->assertCount(6, $results->all());
+    }
+
+    /** @test */
+    public function it_can_handle_a_429_error_and_reattempt_on_get(): void
+    {
+        ResponseFactory::make('successfulGetResponse.json')->getHttpErrorFake(429);
+
+        $results = GetAddress::get('NmNhMTg3ZjBkZmQ1OTg0IDEwMzgwMzg1IDdjZmFmNTA5OTI3YjkzZQ==');
+
+        $this->assertCount(1, $results->getAddresses());
+    }
 }

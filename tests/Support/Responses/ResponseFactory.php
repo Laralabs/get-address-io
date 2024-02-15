@@ -2,6 +2,7 @@
 
 namespace Laralabs\GetAddress\Tests\Support\Responses;
 
+use GuzzleHttp\Promise\PromiseInterface;
 use Illuminate\Http\Client\Factory;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
@@ -37,6 +38,23 @@ class ResponseFactory
     {
         return Http::fake($attributes ?? [
             '*' => Http::response(ResponseFactory::make($this->fileName)->getResponse()),
+        ]);
+    }
+
+    public function getHttpErrorFake(int $code, mixed $content = []): Factory
+    {
+        return Http::fake([
+            '*' => function () use ($code, $content): PromiseInterface {
+                static $callCount = 0;
+
+                $callCount += 1;
+
+                if ($callCount === 1) {
+                    return Http::response($content, $code);
+                }
+
+                return Http::response(ResponseFactory::make($this->fileName)->getResponse());
+            },
         ]);
     }
 
