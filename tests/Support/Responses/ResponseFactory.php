@@ -47,10 +47,6 @@ class ResponseFactory
             '*' => function () use ($code, $content): PromiseInterface {
                 static $callCount = 0;
 
-                if ($code === 429) {
-                    return Http::response($content, $code);
-                }
-
                 $callCount += 1;
 
                 if ($callCount === 1) {
