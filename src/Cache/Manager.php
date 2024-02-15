@@ -66,6 +66,13 @@ class Manager
         return $response;
     }
 
+    public function expand(bool $expand = true): self
+    {
+        $this->expand = $expand;
+
+        return $this;
+    }
+
     protected function checkExpiry(Collection $results): ?array
     {
         $address = $results->first();

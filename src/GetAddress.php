@@ -41,7 +41,7 @@ class GetAddress
         bool $sortNumerically = true
     ): AddressCollectionResponse {
         if ($this->cache) {
-            $cached = $this->manager->checkCache($postcode, $propertyNumber);
+            $cached = $this->manager->expand($this->expand)->checkCache($postcode, $propertyNumber);
 
             if ($cached !== null) {
                 return $this->createAddressCollectionResponse($postcode, $cached);
