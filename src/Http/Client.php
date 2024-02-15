@@ -89,10 +89,6 @@ class Client
             return null;
         }
 
-        if ($response->failed()) {
-            Handler::throwException($response->status());
-        }
-
         return $response->json();
     }
 
