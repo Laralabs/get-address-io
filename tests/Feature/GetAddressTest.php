@@ -136,6 +136,8 @@ class GetAddressTest extends TestCase
     /** @test */
     public function it_can_perform_a_get_request_for_an_autocomplete_result_item(): void
     {
+        config()->set('getaddress.expanded_results', true);
+
         ResponseFactory::make('successfulGetResponse.json')->getHttpFake();
 
         $results = GetAddress::get('NmNhMTg3ZjBkZmQ1OTg0IDEwMzgwMzg1IDdjZmFmNTA5OTI3YjkzZQ==');
