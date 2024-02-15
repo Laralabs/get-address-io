@@ -2,6 +2,7 @@
 
 namespace Laralabs\GetAddress\Tests\Feature;
 
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Laralabs\GetAddress\Cache\Manager;
 use Laralabs\GetAddress\Facades\GetAddress;
@@ -73,6 +74,29 @@ class GetAddressTest extends TestCase
     }
 
     /** @test */
+    public function it_can_do_a_postcode_lookup_using_find_then_store_and_return_results_from_the_cache(): void
+    {
+        Carbon::setTestNow('2024-02-14 12:00:00');
+
+        config()->set('getaddress.enable_cache', true);
+
+        ResponseFactory::make('successfulFindResponse.json')->getHttpFake();
+
+        CachedAddress::factory()->create(['line_1' => '1 Example Street', 'postcode' => 'B13 9SZ']);
+
+        $this->assertEquals(1, CachedAddress::count());
+
+        Carbon::setTestNow('2024-03-15 12:00:00');
+
+        $results = get_address()->expand()->find('B13 9SZ');
+
+        $this->assertEquals(14, CachedAddress::count());
+
+        $this->assertCount(14, $results->getAddresses());
+        $this->assertEquals('B13 9SZ', $results->getPostcode());
+    }
+
+    /** @test */
     public function it_can_do_a_postcode_lookup_using_find_and_store_response_in_cache(): void
     {
         config()->set('getaddress.enable_cache', true);
@@ -81,7 +105,7 @@ class GetAddressTest extends TestCase
 
         $this->assertEquals(0, CachedAddress::count());
 
-        $results = get_address()->expand()->find('B13 9SZ');
+        $results = get_address()->find('B13 9SZ');
 
         $this->assertEquals(14, CachedAddress::count());
 
