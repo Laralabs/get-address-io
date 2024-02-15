@@ -43,7 +43,8 @@ class ManagerTest extends TestCase
         $result = $this->manager->checkCache('ABC 123', 1);
 
         $this->assertCount(1, $result['addresses'] ?? 0);
-        $this->assertEquals('1 Example Street', $result['addresses'][0]['line_1']);
+
+        $this->assertEquals('1 Example Street, Moseley, Birmingham, West Midlands', $result['addresses'][0]);
         $this->assertEquals('ABC 123', $result['postcode']);
     }
 
