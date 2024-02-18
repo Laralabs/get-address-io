@@ -2,19 +2,13 @@
 
 namespace Laralabs\GetAddress\Exceptions;
 
-class Unknown extends \Exception
+use Exception;
+
+class Unknown extends Exception
 {
-    /**
-     * Message.
-     *
-     * @var string
-     */
     protected $message = 'getAddress responded with a %d http status';
 
-    /**
-     * {@inheritdoc}
-     */
-    public function __construct($status)
+    public function __construct(int $status)
     {
         $this->message = sprintf($this->message, $status);
 

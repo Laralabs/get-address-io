@@ -16,48 +16,84 @@ class HandlerTest extends TestCase
     /** @test */
     public function it_throws_an_unknown_exception_when_no_match(): void
     {
-        $this->expectException(Unknown::class);
+        try {
+            Handler::throwException(418);
+        } catch (Unknown $exception) {
+            $this->assertEquals('getAddress responded with a 418 http status', $exception->getMessage());
 
-        Handler::throwException(418);
+            return;
+        }
+
+        $this->fail('Unknown exception not thrown');
     }
 
     /** @test */
     public function it_throws_an_invalid_postcode_exception(): void
     {
-        $this->expectException(InvalidPostcode::class);
+        try {
+            Handler::throwException(400);
+        } catch (InvalidPostcode $exception) {
+            $this->assertEquals('The postcode you provided was not a valid format.', $exception->getMessage());
 
-        Handler::throwException(400);
+            return;
+        }
+
+        $this->fail('InvalidPostcode exception not thrown');
     }
 
     /** @test */
-    public function it_throws_a_forbiddin_exception(): void
+    public function it_throws_a_forbidden_exception(): void
     {
-        $this->expectException(Forbidden::class);
+        try {
+            Handler::throwException(401);
+        } catch (Forbidden $exception) {
+            $this->assertEquals('Your API key is not valid for this request.', $exception->getMessage());
 
-        Handler::throwException(401);
+            return;
+        }
+
+        $this->fail('Forbidden exception not thrown');
     }
 
     /** @test */
     public function it_throws_a_postcode_not_found_exception(): void
     {
-        $this->expectException(PostcodeNotFound::class);
+        try {
+            Handler::throwException(404);
+        } catch (PostcodeNotFound $exception) {
+            $this->assertEquals('The postcode you provided could not be found.', $exception->getMessage());
 
-        Handler::throwException(404);
+            return;
+        }
+
+        $this->fail('PostcodeNotFound exception not thrown');
     }
 
     /** @test */
     public function it_throws_a_too_many_requests_exception(): void
     {
-        $this->expectException(TooManyRequests::class);
+        try {
+            Handler::throwException(429);
+        } catch (TooManyRequests $exception) {
+            $this->assertEquals('You have made too many requests for this key.', $exception->getMessage());
 
-        Handler::throwException(429);
+            return;
+        }
+
+        $this->fail('TooManyRequests exception not thrown');
     }
 
     /** @test */
     public function it_throws_a_server_exception(): void
     {
-        $this->expectException(ServerError::class);
+        try {
+            Handler::throwException(500);
+        } catch (ServerError $exception) {
+            $this->assertEquals('getAddress.io is currently having issues.', $exception->getMessage());
 
-        Handler::throwException(500);
+            return;
+        }
+
+        $this->fail('ServerError exception not thrown');
     }
 }

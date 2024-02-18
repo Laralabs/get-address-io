@@ -2,12 +2,9 @@
 
 namespace Laralabs\GetAddress\Exceptions;
 
-class PostcodeNotFound extends \Exception
+use Exception;
+
+class PostcodeNotFound extends Exception
 {
-    /**
-     * Exception Message.
-     *
-     * @var string
-     */
     protected $message = 'The postcode you provided could not be found.';
 }
