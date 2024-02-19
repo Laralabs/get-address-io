@@ -31,9 +31,9 @@ class GetAddress
     /**
      * Find an address or range of addresses by a postcode, and optional number/string.
      *
-     * @param string     $postcode        Postcode to search for
-     * @param null|int|string $propertyNumber  Property number or name
-     * @param bool       $sortNumerically Sorts addresses numerically
+     * @param string $postcode Postcode to search for
+     * @param null|int|string $propertyNumber Property number or name
+     * @param bool $sortNumerically Sorts addresses numerically
      */
     public function find(
         string $postcode,
@@ -50,7 +50,10 @@ class GetAddress
 
         $response = $this->createAddressCollectionResponse(
             $postcode,
-            $this->http->get('find', [$postcode, $propertyNumber], ['sort' => (int) $sortNumerically])
+            $this->http->get('find', [$postcode, $propertyNumber], [
+                'sort' => (int) $sortNumerically,
+                'expand' => $this->expand,
+            ])
         );
 
         if ($this->cache && $propertyNumber === null) {
@@ -60,6 +63,13 @@ class GetAddress
         return $response;
     }
 
+    /**
+     * Get an autocomplete response for the given search term.
+     * Use 'id' returned to get full address information using: @see get()
+     *
+     * @param string $term Search term
+     * @param array $parameters Additional parameters
+     */
     public function autocomplete(string $term, array $parameters = []): AutocompleteCollectionResponse
     {
         return new AutocompleteCollectionResponse(
@@ -67,6 +77,12 @@ class GetAddress
         );
     }
 
+    /**
+     * Get the full address information for the given ID.
+     * This method should be used when using: @see autocomplete()
+     *
+     * @param string $id Address unique ID.
+     */
     public function get(string $id): SingleAddressCollectionResponse
     {
         return new SingleAddressCollectionResponse($this->http->get('get', $id), $this->expand);
@@ -85,8 +101,8 @@ class GetAddress
             $postcode,
             $response['latitude'],
             $response['longitude'],
-            array_map(function ($address) {
-                return $this->expand ? new ExpandedAddress($address) : new Address($address);
+            array_map(function (string|array $address): ExpandedAddress|Address {
+                return $this->expand && is_array($address) ? new ExpandedAddress($address) : new Address($address);
             }, $response['addresses'])
         );
     }
