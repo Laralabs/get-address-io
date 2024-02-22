@@ -1,19 +1,10 @@
 <?php
 
+use Laralabs\GetAddress\GetAddress;
+
 if (!function_exists('get_address')) {
-    function get_address($apiKey = null)
+    function get_address(?string $apiKey = null): GetAddress
     {
-        $getAddress = app('getaddress', ['apiKey' => $apiKey]);
-
-        return $getAddress;
-    }
-}
-
-if (!function_exists('get_address_admin')) {
-    function get_address_admin($adminKey = null)
-    {
-        $getAddressAdmin = app('getaddress-admin', ['adminKey' => $adminKey]);
-
-        return $getAddressAdmin;
+        return app('getaddress', ['apiKey' => $apiKey]);
     }
 }

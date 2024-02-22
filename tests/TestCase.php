@@ -6,12 +6,7 @@ use Laralabs\GetAddress\GetAddressServiceProvider;
 
 abstract class TestCase extends \Orchestra\Testbench\TestCase
 {
-    public function setUp(): void
-    {
-        parent::setUp();
-    }
-
-    protected function getPackageProviders($app): array
+    protected function getPackageProviders($app): array //phpcs:ignore
     {
         return [
             GetAddressServiceProvider::class,
