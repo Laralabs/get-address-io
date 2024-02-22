@@ -71,9 +71,10 @@ jobs:
           php -v
           ./vendor/phpunit/phpunit/phpunit --version
           ./vendor/phpunit/phpunit/phpunit --coverage-clover=coverage.xml
+          export CODECOV_TOKEN=${{ secrets.CODECOV_TOKEN }}
+          bash <(curl -s https://codecov.io/bash) || echo 'Codecov failed to upload'
 
-      - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v4.0.1
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          slug: clnt/get-address-io
+      - name: Upload code coverage
+        run: |
+          export CODECOV_TOKEN=${{ secrets.CODECOV_TOKEN }}
+          bash <(curl -s https://codecov.io/bash) || echo 'Codecov failed to upload'
