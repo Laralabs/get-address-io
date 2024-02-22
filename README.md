@@ -1,9 +1,7 @@
 <p align="center">
 <a href="https://packagist.org/packages/laralabs/get-address-io"><img src="https://poser.pugx.org/laralabs/get-address-io/version" alt="Stable Build" /></a>
-<a href="https://travis-ci.org/Laralabs/get-address-io"><img src="https://travis-ci.org/Laralabs/get-address-io.svg?branch=master" alt="Build Status"></a>
-<a href="https://styleci.io/repos/195806527"><img src="https://styleci.io/repos/195806527/shield?branch=master" alt="StyleCI"></a>
-<a href="https://codeclimate.com/github/Laralabs/get-address-io/maintainability"><img src="https://api.codeclimate.com/v1/badges/744992b1495722bd6839/maintainability" /></a>
-<a href="https://codeclimate.com/github/Laralabs/get-address-io/test_coverage"><img src="https://api.codeclimate.com/v1/badges/744992b1495722bd6839/test_coverage" /></a>
+<a href="https://github.com/Laralabs/get-address-io/actions"><img src="https://github.com/clnt/scrubber/actions/workflows/.github-actions.yml/badge.svg" alt="CI Status" /></a>
+<a href="https://codecov.io/gh/Laralabs/get-address-io"><img src="https://codecov.io/gh/Laralabs/get-address-io/branch/master/graph/badge.svg?token=S2VO0QHCP8"/></a>
 </p>
 
 # Laravel getAddress.io Package
@@ -35,22 +33,33 @@ php artisan migrate
 ### Usage
 A helper function and facade is available, choose your preferred method.
 
-Perform a lookup:
+The facade is located at `Laralabs\GetAddress\Facades\GetAddress`
+
+The endpoints currently supported are (support for other endpoints coming soon):
+- find
+- autocomplete
+- get
+
+Perform a lookup using the `find` endpoint:
 ```php
 $results = get_address()->find($postcode, $property);
 ```
 
-Perform an expanded lookup:
-```php
-$results = get_address()->expand()->find($postcode, $property);
-```
-
 The `$property` argument is optional, just searching for a postcode will return all results for that postcode and also cache the data if the cache has been enabled.
 
-## :pushpin: Todo
+Perform a looking using the `autocomplete` endpoint:
+```php
+$results = get_address()->autocomplete($searchTerm, ['top' => '20']);
+```
 
-- Admin Features.
-- Unit Tests.
+The second argument supports an array of parameters to send with the POST request, the example above shows setting the returned results to the maximum allowed of 20.
+
+Perform a lookup using the `get` endpoint:
+```php
+$results = get_address()->get($addressId);
+```
+
+This is used with the `autocomplete` endpoint to return the full address information, the `$addressId` argument must be the ID returned from the autocomplete response.
 
 ## :speech_balloon: Support
 

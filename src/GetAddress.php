@@ -3,70 +3,58 @@
 namespace Laralabs\GetAddress;
 
 use Laralabs\GetAddress\Cache\Manager;
+use Laralabs\GetAddress\Http\Client;
 use Laralabs\GetAddress\Responses\Address;
 use Laralabs\GetAddress\Responses\AddressCollectionResponse;
+use Laralabs\GetAddress\Responses\AutocompleteCollectionResponse;
 use Laralabs\GetAddress\Responses\ExpandedAddress;
+use Laralabs\GetAddress\Responses\SingleAddressCollectionResponse;
 
-class GetAddress extends GetAddressBase
+class GetAddress
 {
-    /**
-     * @var bool
-     */
-    protected $cache;
+    protected Client $http;
 
-    /**
-     * @var \Laralabs\GetAddress\Cache\Manager|null
-     */
-    protected $manager;
+    protected bool $cache = false;
 
-    /**
-     * GetAddress constructor.
-     *
-     * @param string|null $apiKey
-     */
-    public function __construct($apiKey = null)
+    protected ?Manager $manager;
+
+    protected bool $expand = false;
+
+    public function __construct(Client $client)
     {
-        parent::__construct($apiKey);
-
+        $this->http = $client;
         $this->cache = config('getaddress.enable_cache');
         $this->manager = $this->cache ? new Manager() : null;
+        $this->expand = config('getaddress.expanded_results');
     }
 
     /**
      * Find an address or range of addresses by a postcode, and optional number/string.
      *
-     * @param string     $postcode        Postcode to search for
-     * @param int|string $propertyNumber  Property number or name
-     * @param bool       $sortNumerically Sorts addresses numerically
-     *
-     * @throws Exceptions\ForbiddenException
-     * @throws Exceptions\InvalidPostcodeException
-     * @throws Exceptions\PostcodeNotFoundException
-     * @throws Exceptions\ServerException
-     * @throws Exceptions\TooManyRequestsException
-     * @throws Exceptions\UnknownException
-     *
-     * @return \Laralabs\GetAddress\Responses\AddressCollectionResponse
-     * @return AddressCollectionResponse
+     * @param string $postcode Postcode to search for
+     * @param null|int|string $propertyNumber Property number or name
+     * @param bool $sortNumerically Sorts addresses numerically
      */
-    public function find($postcode, $propertyNumber = null, $sortNumerically = true): AddressCollectionResponse
-    {
+    public function find(
+        string $postcode,
+        null|int|string $propertyNumber = null,
+        bool $sortNumerically = true
+    ): AddressCollectionResponse {
         if ($this->cache) {
-            $cached = $this->manager->checkCache($postcode, $propertyNumber);
+            $cached = $this->manager->expand($this->expand)->checkCache($postcode, $propertyNumber);
 
             if ($cached !== null) {
                 return $this->createAddressCollectionResponse($postcode, $cached);
             }
         }
 
-        $this->queryString['sort'] = (int) $sortNumerically;
-
-        $url = sprintf('find/%s', $postcode);
-        if ($propertyNumber !== null) {
-            $url .= sprintf('/%s', $propertyNumber);
-        }
-
-        $response = $this->createAddressCollectionResponse($postcode, $this->call('GET', $url));
+        $response = $this->createAddressCollectionResponse(
+            $postcode,
+            $this->http->get('find', [$postcode, $propertyNumber], [
+                'sort' => (int) $sortNumerically,
+                'expand' => $this->expand,
+            ])
+        );
 
         if ($this->cache && $propertyNumber === null) {
             $this->manager->responseToCache($response);
@@ -76,10 +64,30 @@ class GetAddress extends GetAddressBase
     }
 
     /**
-     * Override expanded results.
+     * Get an autocomplete response for the given search term.
+     * Use 'id' returned to get full address information using: @see get()
      *
-     * @return self
+     * @param string $term Search term
+     * @param array $parameters Additional parameters
      */
+    public function autocomplete(string $term, array $parameters = []): AutocompleteCollectionResponse
+    {
+        return new AutocompleteCollectionResponse(
+            $this->http->post('autocomplete', $term, $parameters)['suggestions'] ?? null
+        );
+    }
+
+    /**
+     * Get the full address information for the given ID.
+     * This method should be used when using: @see autocomplete()
+     *
+     * @param string $id Address unique ID.
+     */
+    public function get(string $id): SingleAddressCollectionResponse
+    {
+        return new SingleAddressCollectionResponse($this->http->get('get', $id), $this->expand);
+    }
+
     public function expand(): self
     {
         $this->expand = true;
@@ -87,20 +95,14 @@ class GetAddress extends GetAddressBase
         return $this;
     }
 
-    /**
-     * @param string $postcode
-     * @param array  $response
-     *
-     * @return AddressCollectionResponse
-     */
     protected function createAddressCollectionResponse(string $postcode, array $response): AddressCollectionResponse
     {
         return new AddressCollectionResponse(
             $postcode,
             $response['latitude'],
             $response['longitude'],
-            array_map(function ($address) {
-                return $this->expand ? new ExpandedAddress($address) : new Address($address);
+            array_map(function (string|array $address): ExpandedAddress|Address {
+                return $this->expand && is_array($address) ? new ExpandedAddress($address) : new Address($address);
             }, $response['addresses'])
         );
     }

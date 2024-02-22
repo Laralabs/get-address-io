@@ -2,6 +2,7 @@
 
 namespace Laralabs\GetAddress\Cache;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Laralabs\GetAddress\Models\CachedAddress;
 use Laralabs\GetAddress\Responses\Address;
@@ -10,15 +11,9 @@ use Laralabs\GetAddress\Responses\ExpandedAddress;
 
 class Manager
 {
-    /**
-     * @var int
-     */
-    protected $expiry;
+    protected int $expiry = 30;
 
-    /**
-     * @var bool
-     */
-    protected $expand;
+    protected bool $expand = false;
 
     public function __construct()
     {
@@ -26,20 +21,16 @@ class Manager
         $this->expand = config('getaddress.expanded_results');
     }
 
-    /**
-     * @param $postcode
-     * @param $property
-     *
-     * @return array|null
-     */
-    public function checkCache($postcode, $property): ?array
+    public function checkCache(string $postcode, null|string|int $property): ?array
     {
-        $params = ['postcode' => $postcode, 'property' => $property];
-
-        $results = CachedAddress::where(function ($query) use ($params) {
-            $params['property'] !== null ? $query->where('postcode', '=', $params['postcode'])->where('line_1', 'LIKE', '%'.$params['property'].'%')
-                : $query->where('postcode', '=', $params['postcode']);
-        })->get();
+        $results = CachedAddress::query()->when(
+            filled($property),
+            static fn (Builder $query): Builder => $query->where(
+                'line_1',
+                'LIKE',
+                '%'.$property.'%'
+            )
+        )->where('postcode', $postcode)->get();
 
         if (count($results) >= 1) {
             return $this->checkExpiry($results);
@@ -48,13 +39,6 @@ class Manager
         return null;
     }
 
-    /**
-     * Store response in cache.
-     *
-     * @param AddressCollectionResponse $response
-     *
-     * @return AddressCollectionResponse
-     */
     public function responseToCache(AddressCollectionResponse $response): AddressCollectionResponse
     {
         foreach ($response->getAddresses() as $address) {
@@ -67,24 +51,28 @@ class Manager
                 ]));
             }
 
-            if ($address instanceof Address) {
-                CachedAddress::create(array_merge($address->toArray(), [
-                    'longitude'       => $response->getLongitude(),
-                    'latitude'        => $response->getLatitude(),
-                    'postcode'        => $response->getPostcode(),
-                    'expanded_result' => false,
-                ]));
+            if ($address instanceof Address === false) {
+                continue;
             }
+
+            CachedAddress::create(array_merge($address->toArray(), [
+                'longitude'       => $response->getLongitude(),
+                'latitude'        => $response->getLatitude(),
+                'postcode'        => $response->getPostcode(),
+                'expanded_result' => false,
+            ]));
         }
 
         return $response;
     }
 
-    /**
-     * @param Collection $results
-     *
-     * @return array|null
-     */
+    public function expand(bool $expand = true): self
+    {
+        $this->expand = $expand;
+
+        return $this;
+    }
+
     protected function checkExpiry(Collection $results): ?array
     {
         $address = $results->first();
@@ -98,25 +86,21 @@ class Manager
         return $this->formatCachedAddresses($results);
     }
 
-    /**
-     * @param Collection $results
-     *
-     * @return array
-     */
     protected function formatCachedAddresses(Collection $results): array
     {
         return [
+            'postcode' => $results->first()->postcode,
             'longitude' => (float) $results->first()->longitude,
             'latitude'  => (float) $results->first()->latitude,
-            'addresses' => $results->map(function ($address) {
-                if ($this->expand) {
-                    return array_merge([
-                        'formatted_string'  => $address->formatted_string,
-                        'formatted_address' => array_values($address->only(CachedAddress::$fields)),
-                    ], $address->only(CachedAddress::$expandedFields));
+            'addresses' => $results->transform(function (CachedAddress $address): string|array {
+                if ($this->expand === false) {
+                    return $address->formatted_string;
                 }
 
-                return $address->formatted_string;
+                return array_merge([
+                    'formatted_string'  => $address->formatted_string,
+                    'formatted_address' => array_values($address->only(CachedAddress::$fields)),
+                ], $address->only(CachedAddress::$expandedFields));
             })->toArray(),
         ];
     }

@@ -1,0 +1,130 @@
+stages:
+  - docker
+  - build
+  - lint
+  - test
+
+# ========= Anchors (Partials) =========
+.php_base: &php_base
+  image: $CI_REGISTRY_IMAGE/php:8.3
+  tags:
+    - docker
+
+.test_base: &test_base
+  stage: test
+  before_script:
+    - rm -rf vendor
+    - php -d memory_limit=-1 /usr/bin/composer require --dev phpunit/phpunit:^$PHPUNIT_VERSION
+    - php -d memory_limit=-1 /usr/bin/composer install
+  script:
+    - composer du
+    - composer test:coverage
+  artifacts:
+    when: on_failure
+    expire_in: 4 hours
+    paths:
+      - storage/logs/
+    reports:
+      junit: coverage/phpunit.junit.xml
+      coverage_report:
+        coverage_format: cobertura
+        path: coverage/cobertura.xml
+  coverage: /^\s*Lines:\s*\d+.\d+\%/
+  tags:
+    - docker
+
+.docker_base: &docker_base
+  stage: docker
+  image: docker:20.10.8-alpine3.14
+  services:
+    - docker:20.10.8-dind-alpine3.14
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - docker pull $CONTAINER_IMAGE:$PHP_VERSION || true
+    - docker build --cache-from $CONTAINER_IMAGE:$PHP_VERSION --build-arg PHP_IMAGE=php:$PHP_VERSION -t $CONTAINER_IMAGE:$PHP_VERSION ./.docker/$SERVICE_NAME
+    - docker push $CONTAINER_IMAGE:$PHP_VERSION
+  when: manual
+  tags:
+    - docker
+
+.docker_variables: &docker_variables
+  CONTAINER_IMAGE: $CI_REGISTRY_IMAGE/$SERVICE_NAME
+  DOCKER_DRIVER: devicemapper
+  DOCKER_TLS_CERTDIR: ''
+  GIT_STRATEGY: fetch
+  GIT_DEPTH: "1"
+
+# ======================
+# Docker jobs
+# ======================
+docker:php81:
+  <<: *docker_base
+  variables:
+    SERVICE_NAME: php
+    PHP_VERSION: "8.1"
+    <<: *docker_variables
+
+docker:php82:
+  <<: *docker_base
+  variables:
+    SERVICE_NAME: php
+    PHP_VERSION: "8.2"
+    <<: *docker_variables
+
+docker:php83:
+  <<: *docker_base
+  variables:
+    SERVICE_NAME: php
+    PHP_VERSION: "8.3"
+    <<: *docker_variables
+
+# ======================
+# Build jobs
+# ======================
+build:php:
+  <<: *php_base
+  stage: build
+  script:
+    - composer install
+  artifacts:
+    paths:
+      - vendor/
+    expire_in: 2 hours
+  cache:
+    paths:
+      - vendor
+    key: php
+
+# ======================
+# Lint jobs
+# ======================
+lint:php:
+  <<: *php_base
+  stage: lint
+  script:
+    - composer phpcs
+  dependencies:
+    - build:php
+  allow_failure: true
+
+# ======================
+# Test jobs
+# ======================
+test:php81:
+  <<: *test_base
+  image: $CI_REGISTRY_IMAGE/php:8.1
+  variables:
+    PHPUNIT_VERSION: "9.5"
+
+test:php82:
+  <<: *test_base
+  image: $CI_REGISTRY_IMAGE/php:8.2
+  variables:
+    PHPUNIT_VERSION: "9.5"
+
+test:php83:
+  <<: *test_base
+  image: $CI_REGISTRY_IMAGE/php:8.3
+  variables:
+    PHPUNIT_VERSION: "9.5"

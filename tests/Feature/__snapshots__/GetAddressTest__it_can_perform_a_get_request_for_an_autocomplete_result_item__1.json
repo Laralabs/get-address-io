@@ -1,0 +1,32 @@
+{
+    "postcode": "SK10 5GR",
+    "latitude": 53.2998,
+    "longitude": -2.102,
+    "address": {
+        "postcode": "SK10 5GR",
+        "latitude": 53.2998,
+        "longitude": -2.102,
+        "formatted_address": [
+            "Apartment 32",
+            "Clarence Mill",
+            "Clarence Road",
+            "Bollington, Macclesfield",
+            "Cheshire"
+        ],
+        "thoroughfare": "Clarence Road",
+        "building_name": "Clarence Mill",
+        "sub_building_name": "",
+        "sub_building_number": "32",
+        "building_number": "",
+        "line_1": "Apartment 32",
+        "line_2": "Clarence Mill",
+        "line_3": "Clarence Road",
+        "line_4": "",
+        "locality": "Bollington",
+        "town_or_city": "Macclesfield",
+        "county": "Cheshire",
+        "district": "Cheshire East",
+        "country": "England",
+        "residential": true
+    }
+}

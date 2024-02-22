@@ -4,16 +4,11 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateGetAddressCacheTable extends Migration
+return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
-    public function up()
+    public function up(): void
     {
-        Schema::create('getaddress_cache', function (Blueprint $table) {
+        Schema::create('getaddress_cache', static function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->string('line_1')->index();
             $table->string('line_2')->nullable();
@@ -37,13 +32,8 @@ class CreateGetAddressCacheTable extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('getaddress_cache');
     }
-}
+};

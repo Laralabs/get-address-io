@@ -2,15 +2,12 @@
 
 namespace Laralabs\GetAddress;
 
+use Illuminate\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
+use Laralabs\GetAddress\Http\Client;
 
 class GetAddressServiceProvider extends ServiceProvider
 {
-    /**
-     * Register the service provider.
-     *
-     * @return void
-     */
     public function register(): void
     {
         $this->mergeConfigFrom(
@@ -18,20 +15,15 @@ class GetAddressServiceProvider extends ServiceProvider
             'getaddress'
         );
 
-        $this->app->bind('getaddress', function ($app, $parameters) {
-            return new GetAddress($parameters['apiKey']);
+        $this->app->singleton(Client::class, function (Application $app, array $parameters): Client { //phpcs:ignore
+            return new Client($parameters['apiKey'] ?? null, $parameters['adminKey'] ?? null);
         });
 
-        $this->app->bind('getaddress-admin', function ($app, $parameters) {
-            return new GetAddressAdmin($parameters['adminKey']);
+        $this->app->bind('getaddress', function (Application $app, array $parameters): GetAddress { //phpcs:ignore
+            return new GetAddress(app(Client::class, ['apiKey' => $parameters['apiKey'] ?? null]));
         });
     }
 
-    /**
-     * Bootstrap the application events.
-     *
-     * @return void
-     */
     public function boot(): void
     {
         $this->publishes([
