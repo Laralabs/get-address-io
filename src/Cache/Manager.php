@@ -92,7 +92,7 @@ class Manager
             'postcode' => $results->first()->postcode,
             'longitude' => (float) $results->first()->longitude,
             'latitude'  => (float) $results->first()->latitude,
-            'addresses' => $results->transform(function ($address) {
+            'addresses' => $results->transform(function (CachedAddress $address): string|array {
                 if ($this->expand === false) {
                     return $address->formatted_string;
                 }
