@@ -74,14 +74,8 @@ jobs:
           export CODECOV_TOKEN=${{ secrets.CODECOV_TOKEN }}
           bash <(curl -s https://codecov.io/bash) || echo 'Codecov failed to upload'
 
-      - name: Upload code coverage
-        run: |
-          export CODECOV_TOKEN=${{ secrets.CODECOV_TOKEN }}
-          bash <(curl -s https://codecov.io/bash) || echo 'Codecov failed to upload'
-
-      - name: Upload log artifacts
-        uses: actions/upload-artifact@v2
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4.0.1
         with:
-          name: logs
-          path: ~/storage/logs
-          retention-days: 3
+          token: ${{ secrets.CODECOV_TOKEN }}
+          slug: clnt/get-address-io
